@@ -12,8 +12,8 @@ from .models import Test
 
 
 
-class Acceuil(generic.ListView):
-    template_name = 'projet/acceuil.html'
+class Accueil(generic.ListView):
+    template_name = 'projet/accueil.html'
     def get_queryset(self):
 #        """
 ##        Return the last five published questions (not including those set to be

@@ -1,0 +1,21 @@
+h1 {
+    font-size: 60px;
+    text-align: center;
+}
+  
+legend {
+    font-size: 18px;
+    display: block;
+    font: 1rem 'Fira Sans', sans-serif;
+}
+
+input,
+label {
+    font: 1rem 'Fira Sans', sans-serif;
+    margin: 0.4rem 0;
+}
+
+button{
+    font: 1rem 'Fira Sans', sans-serif;
+    margin: 0.4rem 0;
+}

@@ -1,6 +1,6 @@
 digraph model_graph {
   // Dotfile by Django-Extensions graph_models
-  // Created: 2023-01-14 16:31
+  // Created: 2023-01-24 15:27
   // Cli Options: -a --dot -o myapp_models.dot
 
   fontname = "Roboto"
@@ -533,6 +533,14 @@ digraph model_graph {
   
   
     <TR><TD ALIGN="LEFT" BORDER="0">
+    <FONT FACE="Roboto">espece</FONT>
+    </TD><TD ALIGN="LEFT">
+    <FONT FACE="Roboto">CharField</FONT>
+    </TD></TR>
+  
+  
+  
+    <TR><TD ALIGN="LEFT" BORDER="0">
     <FONT COLOR="#7B7B7B" FACE="Roboto">sequence_genome</FONT>
     </TD><TD ALIGN="LEFT">
     <FONT COLOR="#7B7B7B" FACE="Roboto">TextField</FONT>
@@ -575,23 +583,23 @@ digraph model_graph {
   
   
     <TR><TD ALIGN="LEFT" BORDER="0">
+    <FONT FACE="Roboto"><B>emailAnnotateur</B></FONT>
+    </TD><TD ALIGN="LEFT">
+    <FONT FACE="Roboto"><B>ForeignKey (email)</B></FONT>
+    </TD></TR>
+  
+  
+  
+    <TR><TD ALIGN="LEFT" BORDER="0">
+    <FONT FACE="Roboto"><B>emailValidateur</B></FONT>
+    </TD><TD ALIGN="LEFT">
+    <FONT FACE="Roboto"><B>ForeignKey (email)</B></FONT>
+    </TD></TR>
+  
+  
+  
+    <TR><TD ALIGN="LEFT" BORDER="0">
     <FONT FACE="Roboto">commentaire</FONT>
-    </TD><TD ALIGN="LEFT">
-    <FONT FACE="Roboto">CharField</FONT>
-    </TD></TR>
-  
-  
-  
-    <TR><TD ALIGN="LEFT" BORDER="0">
-    <FONT FACE="Roboto">emailAnnotateur</FONT>
-    </TD><TD ALIGN="LEFT">
-    <FONT FACE="Roboto">CharField</FONT>
-    </TD></TR>
-  
-  
-  
-    <TR><TD ALIGN="LEFT" BORDER="0">
-    <FONT FACE="Roboto">emailValidateur</FONT>
     </TD><TD ALIGN="LEFT">
     <FONT FACE="Roboto">CharField</FONT>
     </TD></TR>
@@ -616,18 +624,18 @@ digraph model_graph {
     </TABLE>
     >]
 
-  projet_models_gene_prot [label=<
+  projet_models_Gene_prot [label=<
     <TABLE BGCOLOR="white" BORDER="1" CELLBORDER="0" CELLSPACING="0">
     <TR><TD COLSPAN="2" CELLPADDING="5" ALIGN="CENTER" BGCOLOR="#1b563f">
     <FONT FACE="Roboto" COLOR="white" POINT-SIZE="10"><B>
-    gene_prot
+    Gene_prot
     </B></FONT></TD></TR>
   
   
     <TR><TD ALIGN="LEFT" BORDER="0">
-    <FONT FACE="Roboto"><B>nom_gene</B></FONT>
+    <FONT FACE="Roboto"><B>nom_transcrit</B></FONT>
     </TD><TD ALIGN="LEFT">
-    <FONT FACE="Roboto"><B>CharField</B></FONT>
+    <FONT FACE="Roboto"><B>TextField</B></FONT>
     </TD></TR>
   
   
@@ -652,6 +660,14 @@ digraph model_graph {
     <FONT FACE="Roboto">end_position</FONT>
     </TD><TD ALIGN="LEFT">
     <FONT FACE="Roboto">IntegerField</FONT>
+    </TD></TR>
+  
+  
+  
+    <TR><TD ALIGN="LEFT" BORDER="0">
+    <FONT FACE="Roboto">nom_gene</FONT>
+    </TD><TD ALIGN="LEFT">
+    <FONT FACE="Roboto">CharField</FONT>
     </TD></TR>
   
   
@@ -736,7 +752,13 @@ digraph model_graph {
   projet_models_Annotation -> projet_models_Genome
   [label=" Id_genome (annotation)"] [arrowhead=none, arrowtail=dot, dir=both];
 
-  projet_models_gene_prot -> projet_models_Genome
+  projet_models_Annotation -> projet_models_Utilisateur
+  [label=" emailAnnotateur (emailAnnotateur)"] [arrowhead=none, arrowtail=dot, dir=both];
+
+  projet_models_Annotation -> projet_models_Utilisateur
+  [label=" emailValidateur (emailValidateur)"] [arrowhead=none, arrowtail=dot, dir=both];
+
+  projet_models_Gene_prot -> projet_models_Genome
   [label=" Id_genome (gene_prot)"] [arrowhead=none, arrowtail=dot, dir=both];
 
 

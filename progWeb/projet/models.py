@@ -8,7 +8,7 @@ class Utilisateur(models.Model):
     prenom = models.CharField(max_length=30)
     mot_de_passe= models.CharField(max_length=30)
     tel = models.IntegerField()#max_length=30)
-    role = models.CharField(max_length=100,choices=(("annot","annotateur"),("val", "validateur"),("user","utilisateur")),default="user")
+    #role = models.CharField(max_length=100,choices=(("annot","annotateur"),("val", "validateur"),("user","utilisateur")),default="user")
     # Rajouter date et heure, il doit exister une fonction pour ça
 
 class Genome(models.Model):

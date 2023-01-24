@@ -6,4 +6,4 @@ data/
 .DS_Store
 *.dot
 *.png
-projet/migrations/
+progWeb/projet/migrations

@@ -8,7 +8,6 @@ from django.views import generic ### cette ligne nous permet d'avoir une classe 
 ### pouvoir nous donnée des type de list generic
 ### La vue générique DetailView s’attend à ce que la clé primaire capturée dans l’URL s’appelle "pk",
 ### nous avons donc changé question_id en pk pour les vues génériques.
-from .models import Test
 
 
 
@@ -20,4 +19,4 @@ class Accueil(generic.ListView):
 #        published in the future).
 #        """
         print(self.request.user)
-        return Test.objects
+        return 0

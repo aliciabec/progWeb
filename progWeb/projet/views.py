@@ -20,8 +20,6 @@ class Accueil(generic.ListView):
 #        """
         print(self.request.user)
         return 0
-<<<<<<< HEAD
-=======
 
 
 
@@ -56,4 +54,3 @@ class Annotation(generic.ListView):
 #        """
         print(self.request.user)
         return 0
->>>>>>> 5dc929b (mise a jour branche)

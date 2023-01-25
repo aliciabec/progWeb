@@ -8,6 +8,7 @@ from django.views import generic ### cette ligne nous permet d'avoir une classe 
 ### pouvoir nous donnée des type de list generic
 ### La vue générique DetailView s’attend à ce que la clé primaire capturée dans l’URL s’appelle "pk",
 ### nous avons donc changé question_id en pk pour les vues génériques.
+from projet.models import Genome, Gene_prot, Annotation, Utilisateur
 
 
 
@@ -23,7 +24,7 @@ class Accueil(generic.ListView):
 
 
 
-class Connexion(generic.ListView):
+class Connexion(generic.DetailView):
     template_name = 'projet/connexion.html'
     def get_queryset(self):
 #        """
@@ -36,12 +37,26 @@ class Connexion(generic.ListView):
 
 class Inscription(generic.ListView):
     template_name = 'projet/inscription.html'
-    def get_queryset(self):
+    def get(self, request):
 #        """
 ##        Return the last five published questions (not including those set to be
 #        published in the future).
 #        """
-        print(self.request.user)
+        ## test pour le role 
+        role = ""
+        if request.POST['role'] == "lecteur":
+            role = 'user'
+        elif request.POST['role'] == "annotateur":
+            role = 'annot'
+        elif request.POST['role'] == "validateur":
+            role = 'val'
+        Utilisateur(email = request.POST['email-search']
+                    , nom = request.POST['nom-search']
+                    , prenom= request.POST['prenom-search']
+                    , mot_de_passe = request.POST['pass_id-search']
+                    , tel = request.POST['tel-search']
+                    , role = role).save()
+
         return 0
 
 

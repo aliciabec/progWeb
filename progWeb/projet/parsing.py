@@ -3,10 +3,6 @@ import os
 
 chemin = "./projet/data/"
 listObjet = os.listdir(chemin)
-<<<<<<< HEAD
-=======
-print(listObjet)
->>>>>>> 5dc929b (mise a jour branche)
 
 dicoGene = {}
 dicoGenome = {}
@@ -75,14 +71,10 @@ for idGenome in dicoGene.keys():
     sequence_genome = dicoGenome[idGenome][0], espece = dicoGenome[idGenome][2])
     G.save()
     for nomTranscrit in dicoGene[idGenome].keys():
-<<<<<<< HEAD
         Gene_prot(nom_transcrit= nomTranscrit, Id_genome = Genome.objects.get(Id_genome=idGenome), nom_gene = dicoGene[idGenome][nomTranscrit][2]
-        ,start_position= dicoGene[idGenome][nomTranscrit][0]AAN80120, end_position= dicoGene[idGenome][nomTranscrit][1] 
+        ,start_position= dicoGene[idGenome][nomTranscrit][0], end_position= dicoGene[idGenome][nomTranscrit][1] 
         , description = dicoGene[idGenome][nomTranscrit][3], sequence_nucleotidique= dicoGene[idGenome][nomTranscrit][5] 
         ,sequence_peptidique = dicoGene[idGenome][nomTranscrit][4]).save(force_insert=True)
-=======
-        Gene_prot(nom_transcrit= nomTranscrit, Id_genome = Genome.objects.get(Id_genome=idGenome), nom_gene = dicoGene[idGenome][nomTranscrit][2], start_position= dicoGene[idGenome][nomTranscrit][0], end_position= dicoGene[idGenome][nomTranscrit][1], description = dicoGene[idGenome][nomTranscrit][3], sequence_nucleotidique= dicoGene[idGenome][nomTranscrit][5],sequence_peptidique = dicoGene[idGenome][nomTranscrit][4]).save(force_insert=True)
->>>>>>> 5dc929b (mise a jour branche)
 
 for i in listNonAnnote:
     Annotation(Id_genome = Genome.objects.get(Id_genome=i)).save(force_insert=True)

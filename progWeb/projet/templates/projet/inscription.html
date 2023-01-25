@@ -1,0 +1,91 @@
+<html lang="fr">
+    
+    <head>
+    <!--	<meta charset="UTF-8"> -->
+        <meta charset="utf-8">
+        <title>Inscription</title>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+    button {   
+       background-color: grey;   
+       width: 25%;  
+        color: white;   
+        padding: 10px;   
+        margin: 10px 0px;   
+        border: none;   
+        cursor: pointer;   
+         }   
+
+    input[type=search], input[type=password] {   
+        width: 45%;   
+        margin: 8px 0;  
+        padding: 8px 20px;   
+        display: inline-block;   
+        border: 2px solid green;   
+        box-sizing: border-box;   
+    }
+        
+ 
+     .container { 
+        padding: 25px; 
+        width: 50%;  
+        border: 1px solid black;
+    }
+
+    
+
+    </style>
+    </head>
+
+    <body>
+        <h1>Inscription</h1>
+        <from>
+            <div class="container">
+                <h5>Remplissez les champs suivants</h5> 
+                <legend for="email-search">Votre email :</legend>
+                <input type="search" placeholder="Entrez votre email" id="email-search" name="email">
+
+                <br><br>
+
+                <legend for="pass_id-search">Votre mot de passe :</legend>
+                <input type="password" placeholder="Entrez votre mot de passe" id="pass_id-search" name="pass_word_id">
+
+                <br><br>
+
+                <legend for="nom-search">Votre nom :</legend>
+                <input type="search" placeholder="Entrez votre nom" id="nom-search" name="nom">
+
+                <br><br>
+
+                <legend for="prenom-search">Votre pr&eacute;nom :</legend>
+                <input type="search" placeholder="Entrez votre pr&eacute;nom" id="prenom-search" name="prenom">
+
+                <br><br>
+
+                <legend for="tel-search">Votre num&eacute;ro de t&eacute;l&eacute;phone :</legend>
+                <input type="search" placeholder="Entrez votre num&eacute;ro de t&eacute;l&eacute;phone" id="tel-search" name="tel">
+
+                <br><br>
+
+                <fieldset>
+                    <legend>Choisissez votre rôle souhaité :<span class="material-icons" title="Un lecteur peut lire les informations de la base (poser ses requêtes grâce à un formulaire). Un annotateur peut faire tout ce que fait un utilisateur et en plus annoter des séquences. Un validateur peut faire tout ce que fait un annotateur et en plus valider des annotations des annotateurs." >help</span></legend>
+                    <br>
+                    <form action="#">
+                        <label for="role">Les rôles: </label>
+                        <select name="roles" id="role">
+                          <option value="lecteur">Lecteur</option>
+                          <option value="annotateur">Annotateur</option>
+                          <option value="validateur">Validateur</option>
+                        </select>
+                  </form>
+        
+                </fieldset>
+
+                <button type="submit">S'inscrire</button>  
+
+                <br><br>
+            </div>
+        </from>
+
+    </body>
+</html>

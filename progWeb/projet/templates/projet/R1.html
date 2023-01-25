@@ -1,0 +1,94 @@
+{% load static %}
+
+<html lang="fr">
+    <head>
+    <!--	<meta charset="UTF-8"> -->
+        <meta charset="utf-8">
+        <title>Annotation </title>
+        <link rel="stylesheet" type="text/css" href="{% static 'res1/style.css' %}">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <style>
+            h1 {
+                font-size: 60px;
+                text-align: center;
+                }
+            p {
+                font-size: 18px;
+                font: 1rem 'Fira Sans', sans-serif;
+            }
+            legend {
+                font-size: 18px;
+                display: block;
+                font: 1rem 'Fira Sans', sans-serif;
+                }
+            input,
+            label {
+                font: 1rem 'Fira Sans', sans-serif;
+                margin: 0.4rem 0;
+                }
+            button {   
+               background-color: grey;   
+               width: 25%;  
+               font: 1rem 'Fira Sans', sans-serif;
+                color: white;   
+                padding: 10px;   
+                margin: 10px 0px;   
+                border: none;   
+                cursor: pointer;   
+                 }   
+        
+            input[type=search], input[type=password] {   
+                width: 45%;   
+                margin: 8px 0;  
+                padding: 12px 20px;   
+                display: inline-block;   
+                border: 2px solid green;   
+                box-sizing: border-box;   
+            }
+                
+         
+             .container {   
+                position: relative;
+                padding: 25px; 
+                width: 50%;  
+                border: 1px solid black;
+            } 
+            </style>
+    </head>
+    
+    <body>
+        <h1>Résultats Génome</h1>
+        <p>Nom du génome 1</p>
+
+        <br><br>
+        <from>
+            <div class="container">
+              ATG.....
+            </div> 
+        </from>
+        <br><br>
+        <button>Extraire</button>
+
+        <br><br>
+        <p>Nom du génome n</p>
+        <br><br>
+        <from>
+            <div class="container">
+              ATG.....
+            </div> 
+        </from>
+        <br><br>
+        <button>Extraire</button>
+        <br><br>
+        <br><br>
+        <legend for="Seq-selec">Séquence Séléctionnée :</legend>
+        <input type="search" id="Seq-selec" name="seqselec">
+        <br><br>
+
+    
+        <button>Recherche sur BD alternative</button>
+
+        <button>Alignement</button>
+
+    </body>
+</html>

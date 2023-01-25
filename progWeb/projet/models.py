@@ -33,8 +33,4 @@ class Gene_prot(models.Model):
     end_position = models.IntegerField()#max_length=30)
     description = models.CharField(max_length=1000000,null=True)
     sequence_nucleotidique = models.TextField(null=True)
-<<<<<<< HEAD
     sequence_peptidique = models.TextField(null=True)
-=======
-    sequence_peptidique = models.TextField(null=True)
->>>>>>> 5dc929b (mise a jour branche)

@@ -1,0 +1,32 @@
+button {   
+    background-color: grey;   
+    width: 25%;  
+    color: white;   
+    padding: 10px;   
+    margin: 10px 0px;   
+    border: none;   
+    cursor: pointer;   
+}   
+
+input[type=search], input[type=password] {   
+    width: 45%;   
+    margin: 8px 0;  
+    padding: 8px 20px;   
+    display: inline-block;   
+    border: 2px solid green;   
+    box-sizing: border-box;   
+}
+        
+ 
+.container { 
+    padding: 25px; 
+    width: 50%;  
+    border: 1px solid black;
+}
+
+.select-cible{
+    display:none
+}
+.select-cible-show{
+    display:block
+}

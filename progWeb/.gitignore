@@ -1,0 +1,7 @@
+__pycache__/
+data/
+*.sqlite3
+.DS_Store
+*.dot
+*.png
+progWeb/projet/migrations

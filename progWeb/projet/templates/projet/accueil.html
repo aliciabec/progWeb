@@ -1,15 +1,56 @@
-{% load static %}
-
 <html lang="fr">
     <head>
     <!--	<meta charset="UTF-8"> -->
         <meta charset="utf-8">
         <title>Recherche</title>
-        <link rel="stylesheet" type="text/css" href="{% static 'projet/style.css' %}">
+
+        <style>
+            button {   
+               background-color: grey;   
+               width: 25%;  
+                color: white;   
+                padding: 10px;   
+                margin: 10px 0px;   
+                border: none;   
+                cursor: pointer;   
+                 }   
+        
+            input[type=search], input[type=password] {   
+                width: 45%;   
+                margin: 8px 0;  
+                padding: 8px 20px;   
+                display: inline-block;   
+                border: 2px solid green;   
+                box-sizing: border-box;   
+            }
+
+            .box { 
+                padding: 25px; 
+                width: 50%;  
+                border: 1px solid black;
+                float:left;
+            }
+
+
+            
+
+            #menu-vertical, #menu-vertical ul {
+                padding:0;
+                margin:0;
+                list-style:none;
+                float:none;
+                width: 100%;
+            }
+
+
+
+        </style>
     </head>
 
     <body>
         <h1>Recherche</h1>
+        
+        <div class="box">
         <legend for="seq-search">Sequence :</legend>
         <input type="search" id="seq-search" name="seq">
 
@@ -49,7 +90,16 @@
             <br>
         </fieldset>
 
-        <button>Résultat</button>
+        <a href="#"><button>Résultat</button></a>
+        </div>
+
+        <div>
+        <ul id="menu-vertical">
+            <li><a href="http://127.0.0.1:8000/projet/connexion/"><button>Connexion</button></a></li>
+            <li><a href="http://127.0.0.1:8000/projet/inscription/"><button>Insciption</button></a></li>
+            <li><a href="#"><button>Annotation</button></a></li>
+        </ul>
+        </div>
 
     </body>
 </html>

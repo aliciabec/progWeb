@@ -20,3 +20,37 @@ class Accueil(generic.ListView):
 #        """
         print(self.request.user)
         return 0
+
+
+
+class Connexion(generic.ListView):
+    template_name = 'projet/connexion.html'
+    def get_queryset(self):
+#        """
+##        Return the last five published questions (not including those set to be
+#        published in the future).
+#        """
+        print(self.request.user)
+        return 0
+
+
+class Inscription(generic.ListView):
+    template_name = 'projet/inscription.html'
+    def get_queryset(self):
+#        """
+##        Return the last five published questions (not including those set to be
+#        published in the future).
+#        """
+        print(self.request.user)
+        return 0
+
+
+class Annotation(generic.ListView):
+    template_name = 'projet/annotation.html'
+    def get_queryset(self):
+#        """
+##        Return the last five published questions (not including those set to be
+#        published in the future).
+#        """
+        print(self.request.user)
+        return 0

@@ -5,96 +5,46 @@
     <!--	<meta charset="UTF-8"> -->
         <meta charset="utf-8">
         <title>Annotation </title>
-        <style>
-            h1 {
-                font-size: 60px;
-                text-align: center;
-                }
-            p {
-                font-size: 18px;
-                font: 1rem 'Fira Sans', sans-serif;
-            }
-            p1 {
-                font-size: 20px;
-                font: 1rem 'Fira Sans', sans-serif;
-                color:red;
-                display: block;
-            }
-            legend {
-                font-size: 18px;
-                display: block;
-                font: 1rem 'Fira Sans', sans-serif;
-                }
-            input,
-            label {
-                font: 1rem 'Fira Sans', sans-serif;
-                margin: 0.4rem 0;
-                }
-            button {   
-               background-color: grey;   
-               width: 25%;  
-               font: 1rem 'Fira Sans', sans-serif;
-                color: white;   
-                padding: 10px;   
-                margin: 10px 0px;   
-                border: none;   
-                cursor: pointer;   
-                 }   
-        
-            input[type=search], input[type=password] {   
-                width: 45%;   
-                margin: 8px 0;  
-                padding: 12px 20px;   
-                display: inline-block;   
-                border: 2px solid green;   
-                box-sizing: border-box;   
-            }
-                
-         
-             .container {   
-                position: relative;
-                padding: 25px; 
-                width: 50%;  
-                border: 1px solid black;
-            } 
-            </style>
+        <link rel="stylesheet" type="text/css" href="{% static 'projet/annot.css' %}">
+
     </head>
     
     <body>
         <h1>Annotation</h1>
-        <p>Liste des Annotations validées :
+        <p>Liste des annotations en attente de validation :
         </p>
         <br><br>
 
         <p2>Annotation 1 : </p2>
-        <button>Annoté</button>
-        <button>Validé</button>
+        <button>Visualiser l'annotation</button>
+        <button>Valider</button>
         <br><br>
         <p2>Annotation 2 : </p2>
-        <button>Annoté</button>
-        <button>Validé</button>
+        <button>Visualiser l'annotation</button>
+        <button>Valider</button>
         <br><br>
         <p2>Annotation n : </p2>
-        <button>Annoté </button>
-        <button>Validé </button>
+        <button>Visualiser l'annotation</button>
+        <button>Valider</button>
         <br><br>
-        <p>Liste des Annotations non annotés :
+        <p>Liste des annotations non annotés :
+            Choisissez une séquence que vous voulez commener l'annotation:
         </p>
         <br><br>
         <p2>Annotation 1 : </p2>
         <button>Définir un annotateur</button>
-        <button>Annoté</button>
-        <button>Validé</button>
+        <a href="http://127.0.0.1:8000/projet/annotation/"><button>Annoter</button></a>
+        <button>Valider</button>
         <br><br>
         <p2>Annotation 2 : </p2>
         <button>Définir un annotateur</button>
-        <button>Annoté</button>
-        <button>Validé</button>
+        <a href="http://127.0.0.1:8000/projet/annotation/"><button>Annoter</button></a>
+        <button>Valider</button>
         <br><br>
         <p2>Annotation n : </p2>
         <button>Définir un annotateur</button>
-        <button>Annoté</button>
-        <button>Validé</button>
+        <a href="http://127.0.0.1:8000/projet/annotation/"><button>Annoter</button></a>
+        <button>Valider</button>
         <br><br>
         
         <br><br>

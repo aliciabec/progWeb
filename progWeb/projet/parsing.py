@@ -72,7 +72,7 @@ for idGenome in dicoGene.keys():
     G.save()
     for nomTranscrit in dicoGene[idGenome].keys():
         Gene_prot(nom_transcrit= nomTranscrit, Id_genome = Genome.objects.get(Id_genome=idGenome), nom_gene = dicoGene[idGenome][nomTranscrit][2]
-        ,start_position= dicoGene[idGenome][nomTranscrit][0]AAN80120, end_position= dicoGene[idGenome][nomTranscrit][1] 
+        ,start_position= dicoGene[idGenome][nomTranscrit][0], end_position= dicoGene[idGenome][nomTranscrit][1] 
         , description = dicoGene[idGenome][nomTranscrit][3], sequence_nucleotidique= dicoGene[idGenome][nomTranscrit][5] 
         ,sequence_peptidique = dicoGene[idGenome][nomTranscrit][4]).save(force_insert=True)
 

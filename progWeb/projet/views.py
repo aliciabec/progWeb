@@ -34,34 +34,57 @@ class Connexion(generic.DetailView):
         print(self.request.user)
         return 0
 
+from django.template import RequestContext
+
 
 class Inscription(generic.ListView):
     template_name = 'projet/inscription.html'
-    def get(self, request):
-#        """
-##        Return the last five published questions (not including those set to be
+    def get_queryset(self):
+#        
+##       Return the last five published questions (not including those set to be
 #        published in the future).
-#        """
-        ## test pour le role 
-        role = ""
-        if request.POST['role'] == "lecteur":
-            role = 'user'
-        elif request.POST['role'] == "annotateur":
-            role = 'annot'
-        elif request.POST['role'] == "validateur":
-            role = 'val'
-        Utilisateur(email = request.POST['email-search']
-                    , nom = request.POST['nom-search']
-                    , prenom= request.POST['prenom-search']
-                    , mot_de_passe = request.POST['pass_id-search']
-                    , tel = request.POST['tel-search']
-                    , role = role).save()
-
+#      
         return 0
+    
+    def create_user(self):
+        
+        
+        ## test pour le role 
+        roles = ""
+        print(self.GET)
+        print(self.POST)
+        print(self.POST.keys())
+        if self.POST['roles'] == "lecteur":
+            roles = 'user'
+        elif self.POST['roles'] == "annotateur":
+            roles = 'annot'
+        elif self.POST['roles'] == "validateur":
+            roles = 'val'
+        Utilisateur(email = self.POST['email']
+                    , nom = self.POST['nom']
+                    , prenom= self.POST['prenom']
+                    , mot_de_passe = self.POST['pass_word_id']
+                    , tel = self.POST['tel']
+                    , roles = roles).save()
+
+        return HttpResponseRedirect('/projet/thanks/', RequestContext( self) )
+
 
 
 class Annotation(generic.ListView):
     template_name = 'projet/annotation.html'
+    def get_queryset(self):
+#        """
+##        Return the last five published questions (not including those set to be
+#        published in the future).
+#        """
+        print(self.request.user)
+        return 0
+
+
+
+class Thanks(generic.ListView):
+    template_name = 'projet/thanks.html'
     def get_queryset(self):
 #        """
 ##        Return the last five published questions (not including those set to be

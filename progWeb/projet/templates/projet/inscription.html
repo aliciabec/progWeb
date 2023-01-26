@@ -39,7 +39,9 @@
 
     <body>
         <h1>Inscription</h1>
-        <from>
+        <form action="createuser" method="post">
+            {% csrf_token %}
+
             <div class="container">
                 <h5>Remplissez les champs suivants</h5> 
                 <legend for="email-search">Votre email :</legend>
@@ -70,22 +72,21 @@
                 <fieldset>
                     <legend>Choisissez votre rôle souhaité :<span class="material-icons" title="Un lecteur peut lire les informations de la base (poser ses requêtes grâce à un formulaire). Un annotateur peut faire tout ce que fait un utilisateur et en plus annoter des séquences. Un validateur peut faire tout ce que fait un annotateur et en plus valider des annotations des annotateurs." >help</span></legend>
                     <br>
-                    <form action="#">
                         <label for="role">Les rôles: </label>
                         <select name="roles" id="role">
                           <option value="lecteur">Lecteur</option>
                           <option value="annotateur">Annotateur</option>
                           <option value="validateur">Validateur</option>
                         </select>
-                  </form>
+                       
+
         
                 </fieldset>
 
                 <button type="submit">S'inscrire</button>  
-
                 <br><br>
             </div>
-        </from>
+        </form>
 
     </body>
 </html>

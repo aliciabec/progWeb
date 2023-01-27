@@ -24,7 +24,7 @@ class Accueil(generic.ListView):
 
 
 
-class Connexion(generic.DetailView):
+class Connexion(generic.ListView):
     template_name = 'projet/connexion.html'
     def get_queryset(self):
 #        """
@@ -46,9 +46,7 @@ class Inscription(generic.ListView):
 #      
         return 0
     
-    def create_user(self):
-        
-        
+    def create_user(self):   
         ## test pour le role 
         roles = ""
         print(self.GET)
@@ -67,7 +65,7 @@ class Inscription(generic.ListView):
                     , tel = self.POST['tel']
                     , roles = roles).save()
 
-        return HttpResponseRedirect('/projet/thanks/', RequestContext( self) )
+        return HttpResponseRedirect('/projet/thanks/', RequestContext(self) )
 
 
 

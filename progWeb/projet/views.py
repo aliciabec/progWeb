@@ -90,3 +90,36 @@ class Thanks(generic.ListView):
 #        """
         print(self.request.user)
         return 0
+
+
+class Annot(generic.ListView):
+    template_name = 'projet/annot.html'
+    def get_queryset(self):
+#        """
+##        Return the last five published questions (not including those set to be
+#        published in the future).
+#        """
+        print(self.request.user)
+        return 0
+
+
+class R1(generic.ListView):
+    template_name = 'projet/r1.html'
+    def get_queryset(self):
+#        """
+##        Return the last five published questions (not including those set to be
+#        published in the future).
+#        """
+        print(self.request.user)
+        return 0
+
+
+class R2(generic.ListView):
+    template_name = 'projet/r2.html'
+    def get_queryset(self):
+#        """
+##        Return the last five published questions (not including those set to be
+#        published in the future).
+#        """
+        print(self.request.user)
+        return 0

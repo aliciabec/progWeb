@@ -11,23 +11,15 @@ button {
  input[type=search], input[type=password] {   
      width: 45%;   
      margin: 8px 0;  
-     padding: 12px 20px;   
+     padding: 8px 20px;   
      display: inline-block;   
      border: 2px solid green;   
      box-sizing: border-box;   
  }
+     
 
-.box { 
-    padding: 25px; 
-    width: 45%;  
-    border: 1px solid black;
-    float:left;
-}
-
-#menu-vertical, #menu-vertical ul {
-    padding:0;
-    margin:0;
-    list-style:none;
-    float:none;
-    width: 100%;
-}
+  .container { 
+     padding: 25px; 
+     width: 50%;  
+     border: 1px solid black;
+ }

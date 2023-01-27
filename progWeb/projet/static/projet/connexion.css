@@ -16,18 +16,21 @@ button {
      border: 2px solid green;   
      box-sizing: border-box;   
  }
+ 
+     
 
-.box { 
-    padding: 25px; 
-    width: 45%;  
-    border: 1px solid black;
-    float:left;
-}
+  .box {   
+     padding: 25px;  
+     width: 500px;
+     height: 380px;
+     margin-left: 500px;
+     border: 1px solid black;
+     display: flex;
+     align-items: center;
+     justify-content: center;  
+ } 
 
-#menu-vertical, #menu-vertical ul {
-    padding:0;
-    margin:0;
-    list-style:none;
-    float:none;
-    width: 100%;
-}
+ .box div {
+     width: 500px;
+     height: 380px;
+ }

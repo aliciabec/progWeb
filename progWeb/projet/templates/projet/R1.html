@@ -1,0 +1,48 @@
+{% load static %}
+
+<html lang="fr">
+    <head>
+    <!--	<meta charset="UTF-8"> -->
+        <meta charset="utf-8">
+        <title>Annotation </title>
+        <link rel="stylesheet" type="text/css" href="{% static 'res1/r.css' %}">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        
+    </head>
+    
+    <body>
+        <h1>Résultats Génome</h1>
+        <p>Nom du génome 1</p>
+
+        <br><br>
+        <from>
+            <div class="container">
+              ATG.....
+            </div> 
+        </from>
+        <br><br>
+        <button>Extraire</button>
+
+        <br><br>
+        <p>Nom du génome n</p>
+        <br><br>
+        <from>
+            <div class="container">
+              ATG.....
+            </div> 
+        </from>
+        <br><br>
+        <button>Extraire</button>
+        <br><br>
+        <br><br>
+        <legend for="Seq-selec">Séquence Séléctionnée :</legend>
+        <input type="search" id="Seq-selec" name="seqselec">
+        <br><br>
+
+    
+        <button>Recherche sur BD alternative</button>
+
+        <button>Alignement</button>
+
+    </body>
+</html>

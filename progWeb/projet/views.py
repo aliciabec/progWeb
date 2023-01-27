@@ -40,12 +40,10 @@ from django.template import RequestContext
 class Inscription(generic.ListView):
     template_name = 'projet/inscription.html'
     def get_queryset(self):
-#        
-##       Return the last five published questions (not including those set to be
-#        published in the future).
-#      
-        return 0
     
+        return 0
+
+ 
     def create_user(self):   
         ## test pour le role 
         roles = ""

@@ -65,7 +65,7 @@ class Inscription(generic.ListView):
                     , tel = self.POST['tel']
                     , roles = roles).save()
 
-        return HttpResponseRedirect('/projet/thanks/', RequestContext(self) )
+        return HttpResponseRedirect('/projet/connexion/', RequestContext(self) )
 
 
 

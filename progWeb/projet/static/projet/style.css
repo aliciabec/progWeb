@@ -31,3 +31,7 @@ button {
     float:none;
     width: 100%;
 }
+
+p {
+    visibility: hidden;
+  }

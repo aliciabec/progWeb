@@ -1,12 +1,14 @@
 import datetime
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
-class Utilisateur(models.Model):
-    email = models.EmailField(primary_key=True)
-    nom = models.CharField(max_length=30)
-    prenom = models.CharField(max_length=30)
-    mot_de_passe= models.CharField(max_length=30)
+class Utilisateur(User):
+    User.username = models.CharField(primary_key=True)
+    User.email = models.EmailField(max_length=30)
+    User.last_name = models.CharField(max_length=30)
+    User.first_name = models.CharField(max_length=30)
+    User.password= models.CharField(max_length=30)
     tel = models.IntegerField()#max_length=30)
     roles = models.CharField(max_length=100,choices=(("annot","annotateur"),("val", "validateur"),("user","utilisateur")),default="user")
     # Rajouter date et heure, il doit exister une fonction pour ça

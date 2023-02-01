@@ -10,27 +10,29 @@ from django.views import generic ### cette ligne nous permet d'avoir une classe 
 ### La vue générique DetailView s’attend à ce que la clé primaire capturée dans l’URL s’appelle "pk",
 ### nous avons donc changé question_id en pk pour les vues génériques.
 from projet.models import Genome, Gene_prot, Annotation, Utilisateur
-
-
+from projet.forms import MyForm
 
 def accueil(request):
-    #print(self.POST['typeRecherche'])
-    #if 'gene_prot' in self.POST:
-    #    return HttpResponseRedirect('/projet/r1/', RequestContext(self) )
-    #elif 'gene_prot' in self.POST: 
-    #    return HttpResponseRedirect('/projet/r2/', RequestContext(self) )
-    template = loader.get_template('projet/accueil.html')
-    page = ""
-    if request.method == "POST":
-        recherche_type = request.POST.get("type_recherche", None)
-        if recherche_type in ["genome"]:
-            page = '/projet/r2/'
-        elif recherche_type in ["gene_prot"]:
-            page = '/projet/r2/'
-    context = {
-        'redirection_page': page,
-    }
-    return render(request, 'projet/accueil.html', context)
+    selected_value = ""
+    if request.method == 'POST':
+        form = MyForm(request.POST)
+        if form.is_valid():
+            selected_value = 'r1/'
+
+            if request.POST.get('my_field') == "r1" : 
+
+            #    other_field_value = form.cleaned_data['other_field']
+            # Traitement des données
+                return HttpResponseRedirect(reverse('projet:r1'))
+            elif request.POST.get('my_field') == "r2" : 
+
+            #    other_field_value = form.cleaned_data['other_field']
+            # Traitement des données
+                return HttpResponseRedirect(reverse('projet:r2'))
+    else:
+        form = MyForm()
+
+    return render(request, 'projet/accueil.html', {"form":form})
 
 
 class Connexion(generic.ListView):
@@ -48,14 +50,11 @@ class Connexion(generic.ListView):
 class Inscription(generic.ListView):
     template_name = 'projet/inscription.html'
     def get_queryset(self):
-#        
-##       Return the last five published questions (not including those set to be
-#        published in the future).
-#      
+
         return 0
     
     def create_user(self):   
-        ## test pour le role 
+        ## test pour le role
         roles = ""
         print(self.GET)
         print(self.POST)
@@ -113,21 +112,13 @@ class Annot(generic.ListView):
 
 class R1(generic.ListView):
     template_name = 'projet/r1.html'
+    context_object_name = 'results_genomique'
     def get_queryset(self):
-#        """
-##        Return the last five published questions (not including those set to be
-#        published in the future).
-#        """
-        print(self.request.user)
-        return 0
-
+        return Genome.objects.all()
 
 class R2(generic.ListView):
     template_name = 'projet/r2.html'
+    context_object_name = 'results_gene_prot'
     def get_queryset(self):
-#        """
-##        Return the last five published questions (not including those set to be
-#        published in the future).
-#        """
-        print(self.request.user)
-        return 0
+        ## Maisen il faudra le modifier quand tu auras fait les requetes
+        return Gene_prot.objects.filter(pk= 'AAN78501')

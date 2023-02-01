@@ -10,6 +10,7 @@ from django.contrib import messages
 import json
 import base64
 
+import pickle
 
 def accueil(request):
     user = None

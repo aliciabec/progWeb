@@ -4,9 +4,8 @@
     <head>
     <!--	<meta charset="UTF-8"> -->
         <meta charset="utf-8">
-        <title>Annotation </title>
-        <link rel="stylesheet" type="text/css" href="{% static 'res1/r.css' %}">
-
+        <title>RésultatsG</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'projet/r.css' %}">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <style>
             table, th, td {
@@ -18,7 +17,7 @@
     
     <body>
         <h1>Résultats Génome</h1>
-        <form method="post" action="{% url 'projet:accueil' %}">
+        <form method="get" action="{% url 'projet:accueil' %}">
 
         {% if results_genomique %}
 
@@ -26,12 +25,12 @@
             {% for genome in results_genomique %}
             <H1  style="text-align:center">{{forloop.counter}} - {{genome.Id_genome}}</H1>
 
-            <h2>Résumé</h2>
+            <h2><strong>Résumé :</h2>
 
             <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
                 <tr>
-                  <th>espece</th>
-                  <th>taille</th>
+                  <th>Espèce</th>
+                  <th>Taille</th>
                 </tr>
     
                 <tr>
@@ -40,14 +39,27 @@
                 </tr>
             </table>
     
-            <h2>Séquence</h2>
+            <h2><strong>Séquence :</h2>
 
-            <!--<p  id="sequence" style="word-wrap: break-word;">{{genome.sequence_genome}}</p>-->
+            <div style="width:1800px;height:500px;line-height:3em;overflow:scroll;padding:5px;background-color: white  ;color:black  ; border: 2px solid green;">
+            <p  id="sequence" style="word-wrap: break-word;">{{genome.sequence_genome}}</p>
+            </div>
+            {% endfor %}
+
+            {% for gene in results_transcrits %}
+                <p> {{gene.start_position}} </p>
+                <p> {{gene.end_position}} </p>
             {% endfor %}
 
         </form>     
+        <br><br>
+        <button>Extraire</button>
+        <br><br>
+        <br><br>
+        <legend for="Seq-selec">Séquence Séléctionnée :</legend>
+        <input type="search" id="Seq-selec" name="seqselec">
+        <br><br>
         <button>Recherche sur BD alternative</button>
-
         <button>Alignement</button>
         {% else %}
             <p>Auncun génome n'a pu etre retrouvé avec votre requete, veuillez préciser votre recherche.</p>        

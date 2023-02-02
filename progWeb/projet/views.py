@@ -11,28 +11,70 @@ from django.views import generic ### cette ligne nous permet d'avoir une classe 
 ### nous avons donc changé question_id en pk pour les vues génériques.
 from projet.models import Genome, Gene_prot, Annotation, Utilisateur
 from projet.forms import MyForm
+import pickle
 
 def accueil(request):
-    selected_value = ""
+    
     if request.method == 'POST':
-        form = MyForm(request.POST)
+        form = MyForm(request.POST)  
+
+        ## Récuperation des infos 
+        sequence = request.POST['seq']
+        espece = request.POST['espece']
+        nom_gene = request.POST['nom_gene']
+        nom_transcrit = request.POST['nom_transcrit']
+        description = request.POST['description']
+        seq_prot = request.POST['seq_prot']
+
+        ## Affichage test
+        #print("TEST")
+        #print(espece)
+        #print(sequence)
+
         if form.is_valid():
             selected_value = 'r1/'
 
             if request.POST.get('my_field') == "r1" : 
+                type_resultat="Genome"
+                print("TEST")   
 
-            #    other_field_value = form.cleaned_data['other_field']
+               
+                qs = Genome.objects.values_list('Id_genome','taille_sequence', 'espece').filter(sequence_genome__contains=sequence).filter(espece=espece)
+                
+                ## On recupère les bons genomes grace aux requetes SQL
+                for result in qs:
+                    Id_genome = result[0]
+                    espece_bd = result[2]
+
+               
+
+
+            # other_field_value = form.cleaned_data['other_field']
             # Traitement des données
                 return HttpResponseRedirect(reverse('projet:r1'))
-            elif request.POST.get('my_field') == "r2" : 
 
+            elif request.POST.get('my_field') == "r2" : 
+                type_resultat="Gene_prot"
             #    other_field_value = form.cleaned_data['other_field']
             # Traitement des données
                 return HttpResponseRedirect(reverse('projet:r2'))
+
+        ## Requetes SQL
+       
+        """
+        elif type_resultat== "Gene_prot":
+
+            Gene_prot.objects.all().filter(nom_transcrit = nom_transcrit,
+            nom_gene = nom_gene ,sequence_peptidique = seq_prot, )
+        """
+
+
     else:
         form = MyForm()
 
     return render(request, 'projet/accueil.html', {"form":form})
+
+
 
 
 class Connexion(generic.ListView):
@@ -53,8 +95,6 @@ class Inscription(generic.ListView):
 
         return 0
     
-        return 0
-
  
     def create_user(self):   
         ## test pour le role

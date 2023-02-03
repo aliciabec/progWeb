@@ -11,4 +11,3 @@ urlpatterns = [
     path('r1/<str:requete>/', views.r1, name='r1'),
     path('r2/', views.R2.as_view(), name='r2'),
 ]
- 

@@ -10,26 +10,23 @@ from django.contrib import messages
 from projet.forms import MyForm
 
 def accueil(request):
-    selected_value = ""
+
     if request.method == 'POST':
-        form = MyForm(request.POST)
-        if form.is_valid():
-            selected_value = 'r1/'
+        #form = MyForm(request.POST)
+        #if form.is_valid():
+        if request.POST.get('type_recherche') == "genome" : 
 
-            if request.POST.get('my_field') == "r1" : 
+        #    other_field_value = form.cleaned_data['other_field']
+        # Traitement des données
+            return HttpResponseRedirect(reverse('projet:r1'))
+        elif request.POST.get('type_recherche') == "gene_prot" : 
 
-            #    other_field_value = form.cleaned_data['other_field']
-            # Traitement des données
-                return HttpResponseRedirect(reverse('projet:r1'))
-            elif request.POST.get('my_field') == "r2" : 
-
-            #    other_field_value = form.cleaned_data['other_field']
-            # Traitement des données
-                return HttpResponseRedirect(reverse('projet:r2'))
+        #    other_field_value = form.cleaned_data['other_field']
+        # Traitement des données
+            return HttpResponseRedirect(reverse('projet:r2'))
     else:
-        form = MyForm()
 
-    return render(request, 'projet/accueil.html', {"form":form})
+        return render(request, 'projet/accueil.html')
 
 
 def connexion(request):

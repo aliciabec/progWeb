@@ -61,7 +61,7 @@
     <body>
         <h1>Recherche</h1>
         <form method="post" action="{% url 'projet:accueil' %}">
-
+            {% csrf_token %}
             <div class="box">
             <legend for="seq-search">Sequence :</legend>
             <input type="search" id="seq-search" name="seq">
@@ -74,20 +74,7 @@
             <br><br>
 
             <legend>Résultats souhaités :</legend>
-            <!--<form action="" method="post" name ="type_recherche" >
-                <input type="radio" id="genome" value="genome" >genome</label>
-                <input type="radio" id="gene_prot" value="gene_prot" checked>gene/proteine</label>
-            </form>
-            !-->
-            <!--<form method = POST action ="">
-                <input type="radio" name="type_recherche" value="genome" >genome<br>
-                <input type="radio" name="type_recherche" value="gene_prot" checked>gene/proteine<br>
-            </form>!-->
-
-            {% csrf_token %}
-            {{ form.as_p }}
-            
-            <br><br>
+            <br>
 
             <input type="radio" name="type_recherche" value="genome" id="genome" onClick="cacher();" />
             <label for="genome">genome</label>

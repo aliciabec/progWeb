@@ -1,106 +1,22 @@
+{% load static %}
+
 <html lang="fr">
     
     <head>
     <!--	<meta charset="UTF-8"> -->
         <meta charset="utf-8">
         <title>Annotation</title>
-        <link rel="stylesheet" type="text/css" href="{% static 'projet/style.css' %}">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    
-        <script>
-            /* ///////////////////////////////////////////
-    Plus d'informations liées à la solution  : 
-    //////////////////////////////////////////////
-    https://codepen.io/Zonecss/pen/XLoROv
-    */
+        <link rel="stylesheet" type="text/css" href="{% static 'projet/annotation.css' %}">   
     
     
-    /*
-    Tous les div cibles doivent avoir un class select-cible
-    Leur id doivent avoir comme format 'register-[valeurd de l'option]-form'
-    */
-    
-        function showDiv(oEvent){
-        var sVal = this.value,
-            sIdCible = 'register-'+sVal+'-form',
-            oForm = this.form,
-            sClass = "select-cible-show",
-            //Je recupère les select-cible qui sont dans le form 
-            // je ne parcours pas tout le DOM en faissant document....
-            aDivs = oForm.getElementsByClassName("select-cible");
-        for(var i = 0; i < aDivs.length; i++){
-            var oEle = aDivs[i];
-            if(oEle.id == sIdCible){
-                oEle.classList.add(sClass)
-            }else{ 
-                oEle.classList.remove(sClass)
-            }
-        }
-        }
-        //Quand le DOm est dispo
-        document.addEventListener('DOMContentLoaded',function(){
-            var oForm = document.forms['myForm'];
-            oForm['status-select'].addEventListener('change',showDiv);
-        });
-        </script>
-    
-    
-    <style>
-    button {   
-       background-color: grey;   
-       width: 25%;  
-        color: white;   
-        padding: 10px;   
-        margin: 10px 0px;   
-        border: none;   
-        cursor: pointer;   
-         }   
-
-    input[type=search], input[type=password] {   
-        width: 45%;   
-        margin: 8px 0;  
-        padding: 8px 20px;   
-        display: inline-block;   
-        border: 2px solid green;   
-        box-sizing: border-box;   
-    }
-        
- 
-     .container { 
-        padding: 25px; 
-        width: 50%;  
-        border: 1px solid black;
-    }
-
-    .select-cible{
-        display:none
-    }
-    .select-cible-show{
-        display:block
-    }
-
-    
-    </style>
     </head>
 
     <body>
         <h1>Annotation</h1>
-        <form class="default-form" id="myForm" action="/handball_club_manager_V2/register.php" method="POST">
-            <div class="container">
-                <select class="default-select" name="status-select">
-                    <optgroup label="Type de la s&eacute;quence affect&eacute;">
-                      <option value="default" selected hidden>Choisissez le type de la s&eacute;quence</option>
-                      <option value="cds">CDS</option> <!-- OPTION 1 -->
-                      <option value="pep">peptidique</option> <!-- OPTION 2 -->
-                    </optgroup>
-                </select>
-
-                <br><br>
-
-                <div id="register-cds-form" class="select-cible">
-
+        <div class="container">
                     <fieldset>
-                        <legend>s&eacute;quence nucl&eacute;otidique affect&eacute;e :</legend>
+                        <legend>s&eacute;quence affect&eacute;e :</legend>
                         <br>
                         <br>
             
@@ -151,73 +67,8 @@
                     <button type="submit">Annoter</button>  
 
                     <br><br>
-                </div>
+        </div>
 
-
-
-                <div id="register-pep-form" class="select-cible">
-                    
-                    <fieldset>
-                        <legend>s&eacute;quence prot&eacute;ique affect&eacute;e :</legend>
-                        <br>
-                        <br>
-            
-                    </fieldset>
-
-                    <br><br>
-
-                    <legend for="Seqid-search">Identifiant de la s&eacute;quence :</legend>
-                    <input type="search" placeholder="Ex: AAN78501" id="Seqid-search" name="Seqid">
-
-                    <br><br>
-
-                    <legend for="Seqtype-search">Type de la s&eacute;quence :</legend>
-                    <input type="search" placeholder="Ex: cds" id="Seqtype-search" name="Seqtype">
-
-                    <br><br>
-
-                    <legend for="chr-search">Information chromosomique :</legend>
-                    <input type="search" placeholder="Ex: ASM744v1:Chromosome:190:255:1" id="chr-search" name="chr">
-
-                    <br><br>
-
-                    <legend for="gene-search">Nom du g&egrave;ne :</legend>
-                    <input type="search" placeholder="Ex: c5491" id="gene-search" name="gene">
-
-                    <br><br>
-
-                    <legend for="genetype-search">Type du g&egrave;ne :</legend>
-                    <input type="search" placeholder="Ex: protein_coding" id="genetype-search" name="genetype">
-
-                    <br><br>
-
-                    <legend for="transt-search">Nom du transcrit :</legend>
-                    <input type="search" placeholder="Ex: AAN78501" id="trans-search" name="trans">
-
-                    <br><br>
-
-                    <legend for="transtype-search">Type du transcrit :</legend>
-                    <input type="search" placeholder="Ex: protein_coding" id="transtype-search" name="transtype">
-
-                    <br><br>
-                    
-                    <legend for="genesym-search">Symbol du g&egrave;ne :</legend>
-                    <input type="search" placeholder="Ex: thrL" id="genesym-search" name="genesym">
-
-                    <br><br>
-
-                    <legend for="genedescrip-search">D&eacute;scription du g&egrave;ne :</legend>
-                    <input type="search" placeholder="Ex: Thr operon leader peptide" id="genedescrip-search" name="genedescrip">
-
-                    <br><br>
-
-                    <button type="submit">Annoter</button>  
-
-                    <br><br>
-
-                </div>
-
-            </div>
         </from>
 
     </body>

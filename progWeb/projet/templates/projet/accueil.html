@@ -6,10 +6,62 @@
         <meta charset="utf-8">
         <title>Recherche</title>
         <link rel="stylesheet" type="text/css" href="{% static 'projet/style.css' %}">
+        <script>
+            document.getElementById("champ_cache").style.display = "none";
+
+            function afficher()
+            {
+	            document.getElementById("champ_cache").style.display = "block";
+            }
+            function cacher()
+            {
+	            document.getElementById("champ_cache").style.display = "none";
+            }
+        </script> 
+
+        <style>
+
+        button {   
+            background-color: grey;   
+            width: 25%;  
+            color: white;   
+            padding: 10px;   
+            margin: 10px 0px;   
+            border: none;   
+            cursor: pointer;   
+            }   
+
+        input[type=search], input[type=password] {   
+            width: 45%;   
+            margin: 8px 0;  
+            padding: 12px 20px;   
+            display: inline-block;   
+            border: 2px solid green;   
+            box-sizing: border-box;   
+        }
+
+        .box { 
+            padding: 25px; 
+            width: 50%;  
+            border: 1px solid black;
+            float:left;
+        }
+
+        #menu-vertical, #menu-vertical ul {
+            padding:0;
+            margin:0;
+            list-style:none;
+            float:none;
+            width: 100%;
+        }
+
+        </style>
     </head>
 
     <body>
         <h1>Recherche</h1>
+        
+        <div class="box">
         <legend for="seq-search">Sequence :</legend>
         <input type="search" id="seq-search" name="seq">
 
@@ -20,36 +72,52 @@
 
         <br><br>
 
+
         <legend>Résultats souhaités :</legend>
+        <input type="radio" name="type_recherche" value="genome" id="genome" onClick="cacher();" />
+        <label for="genome">genome</label>
+        <input type="radio" name="type_recherche" value="gene_prot" id="gene_prot" onClick="afficher();" />
+        <label for="gene_prot">gene/proteine</label>
+        <div hidden id=champ_cache>
+            <fieldset>
+                <legend>A repondre seulement si recherche gene/proteine :</legend>
+                <br>
+                <legend for="nom_gene-search">Nom gene :</legend>
+                <input type="search" id="nom_gene-search" name="nom_gene">
 
-        <input type="radio" id="genome" name="type_recherche" value="genome" checked>genome<br>
-        <input type="radio" id="gene_prot" name="type_recherche" value="gene_prot">gene/proteine
-   
-        <br><br>
-        <fieldset>
-            <legend>A repondre seulement si recherche gene/proteine :</legend>
-            <br>
-            <legend for="nom_gene-search">Nom gene :</legend>
-            <input type="search" id="nom_gene-search" name="nom_gene">
+                <br><br>
 
-            <br><br>
+                <legend for="nom_transcrit-search">Nom transcrit :</legend>
+                <input type="search" id="nom_transcrit-search" name="nom_transcrit">
 
-            <legend for="nom_transcrit-search">Nom transcrit :</legend>
-            <input type="search" id="nom_transcrit-search" name="nom_transcrit">
+                <br><br>
 
-            <br><br>
+                <legend for="description-search">Description :</legend>
+                <input type="search" id="description-search" name="description">
 
-            <legend for="description-search">Description :</legend>
-            <input type="search" id="description-search" name="description">
+                <br><br>
 
-            <br><br>
+                <legend for="seq_prot-search">Sequence proteique :</legend>
+                <input type="search" id="seq_prot-search" name="seq_prot">
+                <br>
+            </fieldset>
+        </div>
 
-            <legend for="seq_prot-search">Sequence proteique :</legend>
-            <input type="search" id="seq_prot-search" name="seq_prot">
-            <br>
-        </fieldset>
+        <br>
+        <a href="http://127.0.0.1:8000/projet/r1/"><button>Résultat</button></a>
+    
 
-        <button>Résultat</button>
+             
+        </div>
+
+
+        <div>
+        <ul id="menu-vertical">
+            <li><a href="http://127.0.0.1:8000/projet/connexion/"><button>Connexion</button></a></li>
+            <li><a href="http://127.0.0.1:8000/projet/inscription/"><button>Insciption</button></a></li>
+            <li><a href="http://127.0.0.1:8000/projet/annot/"><button>Annotation</button></a></li>
+        </ul>
+        </div>
 
     </body>
 </html>

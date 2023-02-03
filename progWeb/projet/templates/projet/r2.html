@@ -1,0 +1,94 @@
+{% load static %}
+
+<html lang="fr">
+    <head>
+    <!--	<meta charset="UTF-8"> -->
+        <meta charset="utf-8">
+        <title>Annotation </title>
+        <link rel="stylesheet" type="text/css" href="{% static 'res1/r.css' %}">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <style>
+            table, th, td {
+                border: 1px solid black;
+            }
+        </style>
+        
+        <script type="text/javascript">
+            $(document).ready(function(){ // Add your event handlers inside ready block
+                $(function () {
+                    $(".buttonclipboard").click(function (e) {
+                        e.preventDefault();
+                    });
+                });
+                });
+        </script>
+        <script>
+            function copyText(id) {
+        
+                /* Select text area by id*/
+                var  text = document.getElementById(id).innerHTML;
+        
+                /* Copy selected text into clipboard */
+                navigator.clipboard.writeText(text);
+
+            }
+        </script>
+    </head>
+    
+    <body>
+        <h1>Résultats Génome</h1>
+        <form method="get" action="{% url 'projet:accueil' %}">
+
+        {% if results_gene_prot %}
+
+
+            {% for genome_prot in results_gene_prot %}
+            <H1  style="text-align:center">{{forloop.counter}} - {{genome_prot.Id_genome}}</H1>
+
+            <h2>Résumé</h2>
+
+            <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+                <tr>
+                  <th>Nom transcrit</th>
+                  <th>Nom du gène</th>
+                  <th>Start</th>
+                  <th>End</th>
+                  <th>Description</th>
+                </tr>
+    
+                <tr>
+                    <td>{{genome_prot.nom_transcrit}}</td>
+                    <td>{{genome_prot.nom_gene}}</td>
+                    <td>{{genome_prot.start_position}}</td>
+                    <td>{{genome_prot.end_position}}</td>
+                    <td>{{genome_prot.description}}</td>
+                </tr>
+            </table>
+    
+            <h2>Séquence nucléotidique</h2>
+
+            <button class="buttonclipboard" onclick="copyText('sequence_nuc')">Copier la séquence dans le presse papier</button>
+
+            <p  id="sequence_nuc" class = "clipboard" style="word-wrap: break-word;">{{genome_prot.sequence_nucleotidique}}</p>
+            
+            
+            <h2>Séquence peptidique</h2>
+            <button class="buttonclipboard" onclick="copyText('sequence_pep')">Copier la séquence dans le presse papier</button>
+
+            <p  id="sequence_pep" class="clipboard" style="word-wrap: break-word;">{{genome_prot.sequence_peptidique}}</p>
+
+            
+            {% endfor %}
+
+        </form>     
+        <button>Recherche sur BD alternative</button>
+
+        <button>Alignement</button>
+        {% else %}
+            <p>Il n'y pas de genome selectionner avec votre requete veuillez en selectionner une autre.</p>        
+        {% endif %}
+
+    </body>
+</html>

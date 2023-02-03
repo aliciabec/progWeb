@@ -117,6 +117,20 @@ def r1(request, requete):
 class R2(generic.ListView):
     template_name = 'projet/r2.html'
     context_object_name = 'results_gene_prot'
-    def get_queryset(self):
-        ## Maisen il faudra le modifier quand tu auras fait les requetes
-        return Gene_prot.objects.filter(pk= 'AAN78501')
+    def get_queryset(request):
+
+        #print(request.GET.keys())
+        #print(request.POST.keys())
+        #print(request.user)
+        #print(request.user)
+        #print(request)
+        print('test')
+                
+        sequence = "" #self.request.GET['seq']
+        espece = "" #self.request.GET['espece']
+
+        
+        results = Gene_prot.objects.filter(pk= 'AAN78501').all()
+        print(results)
+        return results.objects.all()
+ 

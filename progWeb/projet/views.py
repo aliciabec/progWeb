@@ -1,16 +1,14 @@
 from django.utils import timezone
-from django.template import loader
-### from .models import Choice, Question => c'est ici qu'il faudra importer les tables !!
+from django.template import loader,RequestContext
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
-from django.views import generic ### cette ligne nous permet d'avoir une classe qui va
-### pouvoir nous donnée des type de list generic
-### La vue générique DetailView s’attend à ce que la clé primaire capturée dans l’URL s’appelle "pk",
-### nous avons donc changé question_id en pk pour les vues génériques.
+from django.views import generic 
 from projet.models import Genome, Gene_prot, Annotation, Utilisateur
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
 
-IdUtilisateur = ""
+
 
 class Accueil(generic.ListView):
     template_name = 'projet/accueil.html'
@@ -24,48 +22,50 @@ class Accueil(generic.ListView):
 
 
 
-class Connexion(generic.ListView):
-    template_name = 'projet/connexion.html'
-    def get_queryset(self):
-#        """
-##        Return the last five published questions (not including those set to be
-#        published in the future).
-#        """
-        print(self.request.user)
-        return 0
-    def connextion_utlisateur(self):
-        IdUtilisateur = self.POST['idd']
-        if len(IdUtilisateur) == 0:
-            return HttpResponseRedirect('/projet/connexion/', RequestContext(self))
+def connexion(request):
+    if request.method == 'POST':
+
+        username = request.POST.get('username')
+        password = request.POST.get('pass_word_id')
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect(reverse('projet:accueil'))
+
+            # Redirect to a success page.
         else:
-            return HttpResponseRedirect('/projet/', RequestContext(self))
+            # Return an 'invalid login' error message.
+            messages.add_message(request, messages.ERROR, 'Incorrect username or password.')
 
-    
-
-from django.template import RequestContext
-
-
-class Inscription(generic.ListView):
-    template_name = 'projet/inscription.html'
-    def get_queryset(self):
-        return 0
+    else:
+        # The request is not a POST, so display the login form.
+        # This scenario would most likely be a GET.
+        return render(request, 'projet/connexion.html')
 
 
-    def create_user(self):   
-        roles = ""
-        if self.POST['roles'] == "lecteur":
-            roles = 'user'
-        elif self.POST['roles'] == "annotateur":
-            roles = 'annot'
-        elif self.POST['roles'] == "validateur":
-            roles = 'val'
-        Utilisateur(email = self.POST['email']
-                    , last_name = self.POST['nom']
-                    , first_name= self.POST['prenom']
-                    , password = self.POST['pass_word_id']
-                    , tel = self.POST['tel']
-                    , roles = roles).save()
-        return HttpResponseRedirect('/projet/connexion/', RequestContext(self) )
+def inscription(request): 
+    if request.method == 'POST':
+        ## Etapes de recuperation de la valeur de role  
+
+        role = 'user'
+        if request.POST.get('roles') == "lecteur":
+            role = 'user'
+        elif request.POST.get('roles') == "annotateur":
+            role = 'annot'
+        elif request.POST.get('roles') == "validateur":
+            role = 'val'
+
+        ## Creation de l'utlisateur avec les informations rentrees par l'utilisateur 
+        Utilisateur.objects.create_user(username = request.POST.get('username')
+                    , email = request.POST.get('email')
+                    , last_name = request.POST.get('nom')
+                    , first_name= request.POST.get('prenom')
+                    , password = request.POST.get('pass_word_id')
+                    , tel = request.POST.get('tel')
+                    , roles = role).save()
+        return HttpResponseRedirect(reverse('projet:connexion'))
+    else: 
+        return render(request, 'projet/inscription.html')
 
 
 

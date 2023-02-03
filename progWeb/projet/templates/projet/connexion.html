@@ -15,17 +15,10 @@
         <center><h1>Connexion</h1></center>
         <form action="{% url 'projet:connexion' %}" method="post">
             {% csrf_token %}
-
-            {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
             <div class="box">
                 <div>
                 <center>
+                    
                     <legend for="id-search">Identifiant :</legend>
                     <input type="search" placeholder="Entrez votre identifiant" id="id-search" name="username">
                     <i class="material-icons" title="L'identifiant est votre username">help</i>
@@ -35,7 +28,16 @@
                     <legend for="pass_id-search">Votre mot de passe :</legend>
                     <input type="password" placeholder="Entrez votre mot de passe" id="pass_id-search" name="pass_word_id">
                 
-                    <br><br>
+                    {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <br>
+                    {% endif %}
+                    <br>
                     <button type="submit">S'inscrire</button></a>
                     <br><br>
                     

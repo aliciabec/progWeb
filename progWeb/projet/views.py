@@ -7,25 +7,17 @@ from django.views import generic
 from projet.models import Genome, Gene_prot, Annotation, Utilisateur
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
-from projet.forms import MyForm
 
 def accueil(request):
 
     if request.method == 'POST':
-        #form = MyForm(request.POST)
-        #if form.is_valid():
+        
         if request.POST.get('type_recherche') == "genome" : 
-
-        #    other_field_value = form.cleaned_data['other_field']
-        # Traitement des données
             return HttpResponseRedirect(reverse('projet:r1'))
+        
         elif request.POST.get('type_recherche') == "gene_prot" : 
-
-        #    other_field_value = form.cleaned_data['other_field']
-        # Traitement des données
             return HttpResponseRedirect(reverse('projet:r2'))
     else:
-
         return render(request, 'projet/accueil.html')
 
 
@@ -43,6 +35,7 @@ def connexion(request):
         else:
             # Return an 'invalid login' error message.
             messages.add_message(request, messages.ERROR, 'Incorrect username or password.')
+            return render(request, 'projet/connexion.html')
 
     else:
         # The request is not a POST, so display the login form.

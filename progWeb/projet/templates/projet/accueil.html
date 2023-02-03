@@ -87,30 +87,40 @@
             {% csrf_token %}
             {{ form.as_p }}
             
-            
             <br><br>
-            <fieldset>
-                <legend>A repondre seulement si recherche gene/proteine :</legend>
-                <br>
-                <legend for="nom_gene-search">Nom gene :</legend>
-                <input type="search" id="nom_gene-search" name="nom_gene">
 
-                <br><br>
+            <input type="radio" name="type_recherche" value="genome" id="genome" onClick="cacher();" />
+            <label for="genome">genome</label>
+            <input type="radio" name="type_recherche" value="gene_prot" id="gene_prot" onClick="afficher();" />
+            <label for="gene_prot">gene/proteine</label>
+            <div hidden id=champ_cache>
 
-                <legend for="nom_transcrit-search">Nom transcrit :</legend>
-                <input type="search" id="nom_transcrit-search" name="nom_transcrit">
+                <fieldset>
+                    <legend>A repondre seulement si recherche gene/proteine :</legend>
+                    <br>
+                    <legend for="nom_gene-search">Nom gene :</legend>
+                    <input type="search" id="nom_gene-search" name="nom_gene">
 
-                <br><br>
+                    <br><br>
 
-                <legend for="description-search">Description :</legend>
-                <input type="search" id="description-search" name="description">
+                    <legend for="nom_transcrit-search">Nom transcrit :</legend>
+                    <input type="search" id="nom_transcrit-search" name="nom_transcrit">
 
-                <br><br>
+                    <br><br>
 
-                <legend for="seq_prot-search">Sequence proteique :</legend>
-                <input type="search" id="seq_prot-search" name="seq_prot">
-                <br>
-            </fieldset>
+                    <legend for="description-search">Description :</legend>
+                    <input type="search" id="description-search" name="description">
+
+                    <br><br>
+
+                    <legend for="seq_prot-search">Sequence proteique :</legend>
+                    <input type="search" id="seq_prot-search" name="seq_prot">
+                    <br>
+                </fieldset>
+
+            </div>
+
+            <br><br>
 
             <button type="submit" value="Submit">Résultat</button></a>
         </form>

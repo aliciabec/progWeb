@@ -1,0 +1,57 @@
+{% load static %}
+
+<html lang="fr">
+    <head>
+    <!--	<meta charset="UTF-8"> -->
+        <meta charset="utf-8">
+        <title>Annotation </title>
+        <link rel="stylesheet" type="text/css" href="{% static 'res1/r.css' %}">
+
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <style>
+            table, th, td {
+                border: 1px solid black;
+            }
+        </style>
+      
+    </head>
+    
+    <body>
+        <h1>Résultats Génome</h1>
+        <form method="get" action="{% url 'projet:accueil' %}">
+
+        {% if results_genomique %}
+
+
+            {% for genome in results_genomique %}
+            <H1  style="text-align:center">{{forloop.counter}} - {{genome.Id_genome}}</H1>
+
+            <h2>Résumé</h2>
+
+            <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
+                <tr>
+                  <th>espece</th>
+                  <th>taille</th>
+                </tr>
+    
+                <tr>
+                    <td>{{genome.espece}}</td>
+                    <td>{{genome.taille_sequence}}</td>
+                </tr>
+            </table>
+    
+            <h2>Séquence</h2>
+
+            <p  id="sequence" style="word-wrap: break-word;">{{genome.sequence_genome}}</p>
+            {% endfor %}
+
+        </form>     
+        <button>Recherche sur BD alternative</button>
+
+        <button>Alignement</button>
+        {% else %}
+            <p>Auncun génome n'a pu etre retrouvé avec votre requete, veuillez préciser votre recherche.</p>        
+        {% endif %}
+
+    </body>
+</html>

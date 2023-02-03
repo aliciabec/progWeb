@@ -1,21 +1,33 @@
-h1 {
-    font-size: 60px;
-    text-align: center;
-}
-  
-legend {
-    font-size: 18px;
-    display: block;
-    font: 1rem 'Fira Sans', sans-serif;
+button {   
+    background-color: grey;   
+    width: 25%;  
+     color: white;   
+     padding: 10px;   
+     margin: 10px 0px;   
+     border: none;   
+     cursor: pointer;   
+      }   
+
+ input[type=search], input[type=password] {   
+     width: 45%;   
+     margin: 8px 0;  
+     padding: 12px 20px;   
+     display: inline-block;   
+     border: 2px solid green;   
+     box-sizing: border-box;   
+ }
+
+.box { 
+    padding: 25px; 
+    width: 45%;  
+    border: 1px solid black;
+    float:left;
 }
 
-input,
-label {
-    font: 1rem 'Fira Sans', sans-serif;
-    margin: 0.4rem 0;
-}
-
-button{
-    font: 1rem 'Fira Sans', sans-serif;
-    margin: 0.4rem 0;
+#menu-vertical, #menu-vertical ul {
+    padding:0;
+    margin:0;
+    list-style:none;
+    float:none;
+    width: 100%;
 }

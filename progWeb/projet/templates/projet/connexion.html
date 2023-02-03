@@ -1,0 +1,46 @@
+{% load static %}
+
+<html lang="fr">
+    
+    <head>
+    <!--	<meta charset="UTF-8"> -->
+        <meta charset="utf-8">
+        <title>Connexion</title>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="{% static 'projet/connexion.css' %}">
+
+    </head>
+
+    <body>
+        <center><h1>Connexion</h1></center>
+        <from>
+            <div class="box">
+                <div>
+                <center>
+                <legend for="id-search">Identifiant :</legend>
+                <input type="search" placeholder="Entrez votre identifiant" id="id-search" name="idd">
+                <i class="material-icons" title="L'identifiant est votre email">help</i>
+
+                <br><br>
+
+                <legend for="pass-search">Mot de passe :</legend>
+                <input type="password" placeholder="Entrez votre mot de passe" id="pass-search" name="pass_word">
+
+                <br><br>
+
+                <a href="http://127.0.0.1:8000/projet/"><button type="submit">Se connecter</button></a>
+
+                <br><br>
+                
+                <div class="links">
+                    <a href="http://127.0.0.1:8000/projet/inscription/" title="Inscrivez-vous !"><i class="material-icons">touch_app</i>&nbsp;Vous n'&ecirc;tes pas encore inscrit ?</a>
+                
+                </center>
+                
+                </div>
+            </div>
+            </div>
+        </from>
+
+    </body>
+</html>

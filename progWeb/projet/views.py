@@ -126,77 +126,6 @@ class Thanks(generic.ListView):
 #        published in the future).
 #        """
         print(self.request.user)
-
-        return 0
-
-
-
-class Connexion(generic.ListView):
-    template_name = 'projet/connexion.html'
-    def get_queryset(self):
-#        """
-##        Return the last five published questions (not including those set to be
-#        published in the future).
-#        """
-        print(self.request.user)
-        return 0
-
-from django.template import RequestContext
-
-
-class Inscription(generic.ListView):
-    template_name = 'projet/inscription.html'
-    def get_queryset(self):
-#        
-##       Return the last five published questions (not including those set to be
-#        published in the future).
-#      
-        return 0
-    
-    def create_user(self):   
-        ## test pour le role 
-        roles = ""
-        print(self.GET)
-        print(self.POST)
-        print(self.POST.keys())
-        if self.POST['roles'] == "lecteur":
-            roles = 'user'
-        elif self.POST['roles'] == "annotateur":
-            roles = 'annot'
-        elif self.POST['roles'] == "validateur":
-            roles = 'val'
-        Utilisateur(email = self.POST['email']
-                    , nom = self.POST['nom']
-                    , prenom= self.POST['prenom']
-                    , mot_de_passe = self.POST['pass_word_id']
-                    , tel = self.POST['tel']
-                    , roles = roles).save()
-
-        return HttpResponseRedirect('/projet/connexion/', RequestContext(self) )
-
-
-
-class Annotation(generic.ListView):
-    template_name = 'projet/annotation.html'
-    def get_queryset(self):
-#        """
-##        Return the last five published questions (not including those set to be
-#        published in the future).
-#        """
-        print(self.request.user)
-        return 0
-
-
-
-class Thanks(generic.ListView):
-    template_name = 'projet/thanks.html'
-    def get_queryset(self):
-#        """
-##        Return the last five published questions (not including those set to be
-#        published in the future).
-#        """
-        print(self.request.user)
-
         return 0
 
 
@@ -213,25 +142,6 @@ class Annot(generic.ListView):
 
 class R1(generic.ListView):
     template_name = 'projet/r1.html'
-    def get_queryset(self):
-#        """
-##        Return the last five published questions (not including those set to be
-#        published in the future).
-#        """
-        print(self.request.user)
-        return 0
-
-
-class R2(generic.ListView):
-    template_name = 'projet/r2.html'
-    def get_queryset(self):
-#        """
-##        Return the last five published questions (not including those set to be
-#        published in the future).
-#        """
-        print(self.request.user)
-        return 0
-
     context_object_name = 'results_genomique'
     def get_queryset(request):
         print("TEST")
@@ -239,7 +149,7 @@ class R2(generic.ListView):
         return Genome.objects.all() 
         
         
-"""
+
 class R2(generic.ListView):
     template_name = 'projet/r2.html'
     context_object_name = 'results_gene_prot'
@@ -259,4 +169,4 @@ class R2(generic.ListView):
         results = Gene_prot.objects.filter(pk= 'AAN78501').all()
         print(results)
         return results.objects.all()
-"""
+ 

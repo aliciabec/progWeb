@@ -1,7 +1,7 @@
 from django.utils import timezone
 from django.template import loader
 ### from .models import Choice, Question => c'est ici qu'il faudra importer les tables !!
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404, HttpRequest
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.template import RequestContext
@@ -16,47 +16,35 @@ import pickle
 def accueil(request):
     
     if request.method == 'POST':
+        #print(request)
+
         form = MyForm(request.POST)  
+        #print(request.POST.keys())
 
         ## Récuperation des infos 
         sequence = request.POST['seq']
         espece = request.POST['espece']
-        nom_gene = request.POST['nom_gene']
-        nom_transcrit = request.POST['nom_transcrit']
-        description = request.POST['description']
-        seq_prot = request.POST['seq_prot']
-
-        ## Affichage test
-        #print("TEST")
         #print(espece)
-        #print(sequence)
 
         if form.is_valid():
             selected_value = 'r1/'
 
             if request.POST.get('my_field') == "r1" : 
-                type_resultat="Genome"
-                print("TEST")   
-
-               
-                qs = Genome.objects.values_list('Id_genome','taille_sequence', 'espece').filter(sequence_genome__contains=sequence).filter(espece=espece)
+                #print("TEST")   
                 
-                ## On recupère les bons genomes grace aux requetes SQL
-                for result in qs:
-                    Id_genome = result[0]
-                    espece_bd = result[2]
-
-               
-
-
-            # other_field_value = form.cleaned_data['other_field']
-            # Traitement des données
+                qs = Genome.objects.values_list('Id_genome','taille_sequence', 'espece').filter(sequence_genome__contains=sequence).filter(espece=espece)
+                #return HttpRequest.POST.get(reverse('projet:r1'))
                 return HttpResponseRedirect(reverse('projet:r1'))
 
+
             elif request.POST.get('my_field') == "r2" : 
-                type_resultat="Gene_prot"
-            #    other_field_value = form.cleaned_data['other_field']
-            # Traitement des données
+
+                nom_gene = request.POST['nom_gene']
+                nom_transcrit = request.POST['nom_transcrit']
+                description = request.POST['description']
+                seq_prot = request.POST['seq_prot']
+
+
                 return HttpResponseRedirect(reverse('projet:r2'))
 
         ## Requetes SQL
@@ -67,7 +55,6 @@ def accueil(request):
             Gene_prot.objects.all().filter(nom_transcrit = nom_transcrit,
             nom_gene = nom_gene ,sequence_peptidique = seq_prot, )
         """
-
 
     else:
         form = MyForm()
@@ -156,12 +143,30 @@ class Annot(generic.ListView):
 class R1(generic.ListView):
     template_name = 'projet/r1.html'
     context_object_name = 'results_genomique'
-    def get_queryset(self):
-        return Genome.objects.all()
+    def get_queryset(request):
+        print("TEST")
+        #print(request.get['seq'])
+        return Genome.objects.all() 
+        
+        
 
 class R2(generic.ListView):
     template_name = 'projet/r2.html'
     context_object_name = 'results_gene_prot'
-    def get_queryset(self):
-        ## Maisen il faudra le modifier quand tu auras fait les requetes
-        return Gene_prot.objects.filter(pk= 'AAN78501')
+    def get_queryset(request):
+
+        #print(request.GET.keys())
+        #print(request.POST.keys())
+        #print(request.user)
+        #print(request.user)
+        #print(request)
+        print('test')
+                
+        sequence = "" #self.request.GET['seq']
+        espece = "" #self.request.GET['espece']
+
+        
+        results = Gene_prot.objects.filter(pk= 'AAN78501').all()
+        print(results)
+        return results.objects.all()
+ 

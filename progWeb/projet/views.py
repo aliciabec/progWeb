@@ -7,15 +7,23 @@ from django.views import generic
 from projet.models import Genome, Gene_prot, Annotation, Utilisateur
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
+import json
+import base64
 
 def accueil(request):
 
     if request.method == 'POST':
-        
-        if request.POST.get('type_recherche') == "genome" : 
-            return HttpResponseRedirect(reverse('projet:r1'))
-        
-        elif request.POST.get('type_recherche') == "gene_prot" : 
+
+        if request.POST.get('type_recherche') == "genome" :
+            requete = {}
+            requete['sequence'] = request.POST.get('seq')
+            requete['espece'] = request.POST.get('espece')
+
+            # Encode the JSON string with base64
+            requete_encode = base64.b64encode(json.dumps(requete).encode("utf-8"))
+
+            return HttpResponseRedirect(reverse('projet:r1', args=(requete_encode.decode("utf-8"),)))
+        elif request.POST.get('type_recherche') == "gene_prot" :
             return HttpResponseRedirect(reverse('projet:r2'))
     else:
         return render(request, 'projet/accueil.html')
@@ -80,18 +88,6 @@ class Annotation(generic.ListView):
         return 0
 
 
-
-class Thanks(generic.ListView):
-    template_name = 'projet/thanks.html'
-    def get_queryset(self):
-#        """
-##        Return the last five published questions (not including those set to be
-#        published in the future).
-#        """
-        print(self.request.user)
-        return 0
-
-
 class Annot(generic.ListView):
     template_name = 'projet/annot.html'
     def get_queryset(self):
@@ -103,11 +99,17 @@ class Annot(generic.ListView):
         return 0
 
 
-class R1(generic.ListView):
-    template_name = 'projet/r1.html'
-    context_object_name = 'results_genomique'
-    def get_queryset(self):
-        return Genome.objects.all()
+#class R1(generic.ListView):
+#    template_name = 'projet/r1.html'
+#    context_object_name = 'results_genomique'
+#    def get_queryset(self, requete):
+#        return requete
+
+def r1(request, requete):
+    # Decode la requete
+    requete_decode = json.loads(base64.b64decode(requete.encode("utf-8")).decode("utf-8"))
+    qs = Genome.objects.filter(sequence_genome__contains=requete_decode['sequence']).filter(espece=requete_decode['espece'])
+    return render(request, 'projet/r1.html', {'results_genomique': qs})
 
 class R2(generic.ListView):
     template_name = 'projet/r2.html'

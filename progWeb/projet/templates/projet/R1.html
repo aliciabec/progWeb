@@ -12,37 +12,35 @@
     
     <body>
         <h1>Résultats Génome</h1>
-        <p>Nom du génome 1</p>
+        {% if results_genomique %}
 
-        <br><br>
-        <from>
-            <div class="container">
-              ATG.....
-            </div> 
-        </from>
-        <br><br>
-        <button>Extraire</button>
+            {% for genome in results_genomique %}
 
-        <br><br>
-        <p>Nom du génome n</p>
-        <br><br>
-        <from>
-            <div class="container">
-              ATG.....
-            </div> 
-        </from>
-        <br><br>
-        <button>Extraire</button>
-        <br><br>
-        <br><br>
-        <legend for="Seq-selec">Séquence Séléctionnée :</legend>
-        <input type="search" id="Seq-selec" name="seqselec">
-        <br><br>
+                {{genome.Id_genome}}
 
-    
+                <br><br>
+                <from>
+                    <div class="container">
+                        <!--{{genome.sequence_genome}}!-->
+                        La sequence est en commentaire. Najlae tu rajoute la ligne en commentaire dans un cadre. 
+                    </div> 
+                </from>
+                <br><br>
+                <button>Extraire</button>
+
+                <br><br>
+                <legend for="Seq-selec">Séquence Séléctionnée :</legend>
+                <input type="search" id="Seq-selec" name="seqselec">
+                <br><br>
+
+            {% endfor %}
+              
         <button>Recherche sur BD alternative</button>
 
         <button>Alignement</button>
+        {% else %}
+            <p>Il n'y pas de genome selectionner avec votre requete veuillez en selectionner une autre.</p>        
+        {% endif %}
 
     </body>
 </html>

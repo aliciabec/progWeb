@@ -7,19 +7,29 @@ from django.views import generic
 from projet.models import Genome, Gene_prot, Annotation, Utilisateur
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
+from projet.forms import MyForm
 
+def accueil(request):
+    selected_value = ""
+    if request.method == 'POST':
+        form = MyForm(request.POST)
+        if form.is_valid():
+            selected_value = 'r1/'
 
+            if request.POST.get('my_field') == "r1" : 
 
-class Accueil(generic.ListView):
-    template_name = 'projet/accueil.html'
-    def get_queryset(self):
-#        """
-##        Return the last five published questions (not including those set to be
-#        published in the future).
-#        """
-        print(self.request.user)
-        return 0
+            #    other_field_value = form.cleaned_data['other_field']
+            # Traitement des données
+                return HttpResponseRedirect(reverse('projet:r1'))
+            elif request.POST.get('my_field') == "r2" : 
 
+            #    other_field_value = form.cleaned_data['other_field']
+            # Traitement des données
+                return HttpResponseRedirect(reverse('projet:r2'))
+    else:
+        form = MyForm()
+
+    return render(request, 'projet/accueil.html', {"form":form})
 
 
 def connexion(request):
@@ -105,21 +115,13 @@ class Annot(generic.ListView):
 
 class R1(generic.ListView):
     template_name = 'projet/r1.html'
+    context_object_name = 'results_genomique'
     def get_queryset(self):
-#        """
-##        Return the last five published questions (not including those set to be
-#        published in the future).
-#        """
-        print(self.request.user)
-        return 0
-
+        return Genome.objects.all()
 
 class R2(generic.ListView):
     template_name = 'projet/r2.html'
+    context_object_name = 'results_gene_prot'
     def get_queryset(self):
-#        """
-##        Return the last five published questions (not including those set to be
-#        published in the future).
-#        """
-        print(self.request.user)
-        return 0
+        ## Maisen il faudra le modifier quand tu auras fait les requetes
+        return Gene_prot.objects.filter(pk= 'AAN78501')

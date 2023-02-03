@@ -3,10 +3,9 @@ from . import views
 
 app_name = 'projet'
 urlpatterns = [
-    path('', views.Accueil.as_view(), name='accueil'),
+    path('', views.accueil, name='accueil'),
     path('connexion/', views.connexion, name='connexion'),
     path('inscription/', views.inscription, name='inscription' ),
-    #path('inscription/createuser', views.Inscription.create_user, name='inscription2' ),
     path('annotation/', views.Annotation.as_view(), name='annotation'),
     path('thanks/', views.Thanks.as_view(), name='thanks'),
     path('annot/', views.Annot.as_view(), name='annot'),

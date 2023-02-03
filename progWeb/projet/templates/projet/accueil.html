@@ -60,25 +60,35 @@
 
     <body>
         <h1>Recherche</h1>
-        
-        <div class="box">
-        <legend for="seq-search">Sequence :</legend>
-        <input type="search" id="seq-search" name="seq">
+        <form method="post" action="{% url 'projet:accueil' %}">
 
-        <br><br>
+            <div class="box">
+            <legend for="seq-search">Sequence :</legend>
+            <input type="search" id="seq-search" name="seq">
 
-        <legend for="espece-search">Espece :</legend>
-        <input type="search" id="espece-search" name="espece">
+            <br><br>
 
-        <br><br>
+            <legend for="espece-search">Espece :</legend>
+            <input type="search" id="espece-search" name="espece">
 
+            <br><br>
 
-        <legend>Résultats souhaités :</legend>
-        <input type="radio" name="type_recherche" value="genome" id="genome" onClick="cacher();" />
-        <label for="genome">genome</label>
-        <input type="radio" name="type_recherche" value="gene_prot" id="gene_prot" onClick="afficher();" />
-        <label for="gene_prot">gene/proteine</label>
-        <div hidden id=champ_cache>
+            <legend>Résultats souhaités :</legend>
+            <!--<form action="" method="post" name ="type_recherche" >
+                <input type="radio" id="genome" value="genome" >genome</label>
+                <input type="radio" id="gene_prot" value="gene_prot" checked>gene/proteine</label>
+            </form>
+            !-->
+            <!--<form method = POST action ="">
+                <input type="radio" name="type_recherche" value="genome" >genome<br>
+                <input type="radio" name="type_recherche" value="gene_prot" checked>gene/proteine<br>
+            </form>!-->
+
+            {% csrf_token %}
+            {{ form.as_p }}
+            
+            
+            <br><br>
             <fieldset>
                 <legend>A repondre seulement si recherche gene/proteine :</legend>
                 <br>
@@ -101,13 +111,9 @@
                 <input type="search" id="seq_prot-search" name="seq_prot">
                 <br>
             </fieldset>
-        </div>
 
-        <br>
-        <a href="http://127.0.0.1:8000/projet/r1/"><button>Résultat</button></a>
-    
-
-             
+            <button type="submit" value="Submit">Résultat</button></a>
+        </form>
         </div>
 
 

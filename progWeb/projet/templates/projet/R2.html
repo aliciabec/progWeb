@@ -11,44 +11,52 @@
     
     <body>
         <h1>Resultats Protéine/Gène</h1>
-        <p>"Nom du Génome 1...n"
-        <br><br>
-        Nom Gène 1...n :
-        <br><br>
-        Nom Transcrit 1...n : 
-        </p>
+        {% if results_gene_prot %}
 
-        <br><br>
-        <from>
-            <legend>Séquence Protéique :</legend>
-            <br><br>
-            <div class="container">
-              M.....
-            </div> 
-        </from>
-        <br><br>
-        <button>Extraire</button>
+            {% for gene_prot in results_gene_prot %}
+                {{gene_prot.Id_genome.Id_genome}} 
+                <!-- Redondance car la base a ete cree comme ca
+                Peut-etre voir si il ne faut pas le changer-->
+                <br><br>
+                {{gene_prot.nom_gene}}
+                <br><br>
+                {{gene_prot.nom_transcrit}}
+                </p>
 
-        <br><br>
-        <from>
-            <legend>Séquence Nucléotidique :</legend>
-            <br><br>
-            <div class="container">
-              ATG.....
-            </div> 
-        </from>
-        <br><br>
-        <button>Extraire</button>
-        
-        <br><br>
-        <legend for="Seq-selec">Séquence Séléctionnée :</legend>
-        <input type="search" id="Seq-selec" name="seqselec">
-        <br><br>
+                <br><br>
+                <from>
+                    <legend>Séquence Protéique :</legend>
+                    <br><br>
+                    <div class="container">
+                        {{gene_prot.sequence_peptidique}}
+                    </div> 
+                </from>
+                <br><br>
+                <button>Extraire</button>
 
+                <br><br>
+                <from>
+                    <legend>Séquence Nucléotidique :</legend>
+                    <br><br>
+                    <div class="container">
+                        {{gene_prot.sequence_nucleotidique}}
+                    </div> 
+                </from>
+                <br><br>
+                <button>Extraire</button>
+                
+                <br><br>
+                <legend for="Seq-selec">Séquence Séléctionnée :</legend>
+                <input type="search" id="Seq-selec" name="seqselec">
+                <br><br>
+                {% endfor %}
     
         <button>Recherche sur BD alternative</button>
 
         <button>Alignement</button>
+        {% else %}
+            <p>Il n'y pas de gene selectionner avec votre requete veuillez en selectionner une autre.</p>        
+        {% endif %}
 
     </body>
 </html>

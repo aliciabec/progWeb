@@ -21,13 +21,25 @@ def accueil(request):
             requete = {}
             requete['sequence'] = request.POST.get('seq')
             requete['espece'] = request.POST.get('espece')
-
             # Encode the JSON string with base64
             requete_encode = base64.b64encode(json.dumps(requete).encode("utf-8"))
 
             return HttpResponseRedirect(reverse('projet:r1', args=(requete_encode.decode("utf-8"),)))
+
         elif request.POST.get('type_recherche') == "gene_prot" :
-            return HttpResponseRedirect(reverse('projet:r2'))
+            requete = {}
+            requete['sequence'] = request.POST.get('seq')
+            requete['espece'] = request.POST.get('espece')
+            requete['nom_gene'] = request.POST.get('nom_gene')
+            requete['nom_transcrit'] = request.POST.get('nom_transcrit')
+            requete['description'] = request.POST.get('description')
+            requete['seq_proteine'] = request.POST.get('seq_prot')
+
+            # Encode the JSON string with base64
+            requete_encode = base64.b64encode(json.dumps(requete).encode("utf-8"))
+
+            return HttpResponseRedirect(reverse('projet:r2', args=(requete_encode.decode("utf-8"),)))
+
     else:
         return render(request, 'projet/accueil.html',{"user": user})
 
@@ -111,12 +123,21 @@ class Annot(generic.ListView):
 def r1(request, requete):
     # Decode la requete
     requete_decode = json.loads(base64.b64decode(requete.encode("utf-8")).decode("utf-8"))
-    qs = Genome.objects.filter(sequence_genome__contains=requete_decode['sequence']).filter(espece=requete_decode['espece'])
-    return render(request, 'projet/r1.html', {'results_genomique': qs})
 
-class R2(generic.ListView):
-    template_name = 'projet/r2.html'
-    context_object_name = 'results_gene_prot'
-    def get_queryset(request):
-        return Gene_prot.objects.filter(pk='AAN78501').all()
- 
+    #print("TEST")
+    #print(requete_decode['sequence'])
+
+    result = Genome.objects.filter(sequence_genome__contains=requete_decode['sequence']).filter(espece=requete_decode['espece'])
+    return render(request, 'projet/r1.html', {'results_genomique': result})
+
+def r2(request, requete):
+    # Decode la requete
+    requete_decode = json.loads(base64.b64decode(requete.encode("utf-8")).decode("utf-8"))
+
+    #print("TEST")
+    #print(requete_decode)
+    
+    result = Gene_prot.objects.filter(sequence_nucleotidique__contains=requete_decode['sequence']).filter(nom_gene=requete_decode['nom_gene']).filter(nom_transcrit= requete_decode['nom_transcrit']).filter(sequence_peptidique__contains=requete_decode['seq_proteine'])#.filter(description__contains=requete_decode['description'])
+
+    
+    return render(request, 'projet/r2.html', {'results_gene_prot': result})

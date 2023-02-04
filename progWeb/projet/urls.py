@@ -9,5 +9,5 @@ urlpatterns = [
     path('annotation/', views.Annotation.as_view(), name='annotation'),
     path('annot/', views.Annot.as_view(), name='annot'),
     path('r1/<str:requete>/', views.r1, name='r1'),
-    path('r2/', views.R2.as_view(), name='r2'),
+    path('r2/<str:requete>/', views.r2, name='r2'),
 ]

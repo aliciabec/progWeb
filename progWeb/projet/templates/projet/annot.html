@@ -37,7 +37,8 @@
                 {% for Utilisateur in liste_annot %}
                         <option value="default" selected hidden>Définir un annotateur</option>
                         <option value="liste_annot">{{ Utilisateur }} </option> 
-                {% endfor %}
+            {% endfor %}
+            
             {% endif%}
             </optgroup>
             </select>
@@ -46,7 +47,6 @@
                 <a href="http://127.0.0.1:8000/projet/annotation/"><button>Annoter</button></a>
             {% endif%}
             
-            <button>Valider</button>
             
             <br><br>
         </form>

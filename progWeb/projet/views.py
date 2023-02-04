@@ -11,9 +11,12 @@ import json
 import base64
 
 def accueil(request):
-
+    user = None
+    if request.user.is_authenticated:
+        user = request.user
+    
     if request.method == 'POST':
-
+       
         if request.POST.get('type_recherche') == "genome" :
             requete = {}
             requete['sequence'] = request.POST.get('seq')
@@ -26,7 +29,7 @@ def accueil(request):
         elif request.POST.get('type_recherche') == "gene_prot" :
             return HttpResponseRedirect(reverse('projet:r2'))
     else:
-        return render(request, 'projet/accueil.html')
+        return render(request, 'projet/accueil.html',{"user": user})
 
 
 def connexion(request):

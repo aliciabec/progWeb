@@ -108,7 +108,6 @@
             </div>
 
             <br><br>
-
             <button type="submit" value="Submit">Résultat</button></a>
         </form>
         </div>
@@ -118,7 +117,11 @@
         <ul id="menu-vertical">
             <li><a href="http://127.0.0.1:8000/projet/connexion/"><button>Connexion</button></a></li>
             <li><a href="http://127.0.0.1:8000/projet/inscription/"><button>Insciption</button></a></li>
-            <li><a href="http://127.0.0.1:8000/projet/annot/"><button>Annotation</button></a></li>
+            {% if user %}
+                {% if user.roles != 'user' %}
+                    <li><a href="http://127.0.0.1:8000/projet/annot/"><button>Annotation</button></a></li>
+                {% endif %}
+            {% endif %}
         </ul>
         </div>
 

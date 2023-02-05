@@ -21,6 +21,10 @@ class Genome(models.Model):
     sequence_genome = models.TextField(null=True,blank=True)
     espece = models.CharField(max_length=100,null=True)
 
+    # Afficher uniquement l'id lorsqu'on veut print un objet
+    def __str__(self) -> str:
+        return self.Id_genome
+
 class Annotation(models.Model):
     Id_genome = models.ForeignKey(Genome,on_delete=models.CASCADE)#,primary_key=True)
     emailAnnotateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE,null=True,related_name="emailAnnotateur")

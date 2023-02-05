@@ -66,8 +66,17 @@
             <legend for="seq-search">Sequence :</legend>
             <input type="search" id="seq-search" name="seq">
 
-            <br><br>
-
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <br>
+            {% endif %}
+            <br>
+            
             <legend for="espece-search">Espece :</legend>
             <input type="search" id="espece-search" name="espece">
 

@@ -16,7 +16,12 @@ def accueil(request):
         user = request.user
     
     if request.method == 'POST':
-       
+        
+        if len(request.POST.get('seq')) < 3:
+            # Message d'erreur si l'utilisateur rentre un nombre de nucléotide inférieur à 3.
+            messages.add_message(request, messages.ERROR, 'Au moins trois caractères sont nécessaires.')
+            return render(request, 'projet/accueil.html')
+
         if request.POST.get('type_recherche') == "genome" :
             requete = {}
             requete['sequence'] = request.POST.get('seq')
@@ -113,31 +118,49 @@ class Annot(generic.ListView):
         print(self.request.user)
         return 0
 
-
-#class R1(generic.ListView):
-#    template_name = 'projet/r1.html'
-#    context_object_name = 'results_genomique'
-#    def get_queryset(self, requete):
-#        return requete
-
 def r1(request, requete):
     # Decode la requete
     requete_decode = json.loads(base64.b64decode(requete.encode("utf-8")).decode("utf-8"))
 
-    #print("TEST")
-    #print(requete_decode['sequence'])
+    """
+    #Si l'utilisateur n'a rien rempli (excepté le champ sequence qui est obligatoire) dans les champs Genome:
+    if requete_decode['sequence']:
+        if not requete_decode:
+            return render(request, 'projet/r1.html', {'results_genomique': None})
+    """
 
-    result = Genome.objects.filter(sequence_genome__contains=requete_decode['sequence']).filter(espece=requete_decode['espece'])
+    # On initialise result avec tous les objects du Genome avec le filtre sur la sequence qui ne peut pas etre vide
+    result = Genome.objects.filter(sequence_genome__contains=requete_decode['sequence'])
+    print("TEST")
+    print(result)
+
+    # On filtre seulement si le champ est rempli par l'utilisateur
+    # Pour le Genome seul le champ espece peut etre vide parmis les deux champs à remplir (sequence et espece)
+
+    if requete_decode['espece']:
+        result = result.filter(espece=requete_decode['espece'])
+ 
     return render(request, 'projet/r1.html', {'results_genomique': result})
 
 def r2(request, requete):
     # Decode la requete
     requete_decode = json.loads(base64.b64decode(requete.encode("utf-8")).decode("utf-8"))
 
-    #print("TEST")
-    #print(requete_decode)
-    
-    result = Gene_prot.objects.filter(sequence_nucleotidique__contains=requete_decode['sequence']).filter(nom_gene=requete_decode['nom_gene']).filter(nom_transcrit= requete_decode['nom_transcrit']).filter(sequence_peptidique__contains=requete_decode['seq_proteine'])#.filter(description__contains=requete_decode['description'])
+    # On initialise result avec tous les objects du Gene_prot avec le filtre sur la sequence qui ne peut pas etre vide
+    result = Gene_prot.objects.filter(sequence_nucleotidique__contains=requete_decode['sequence'])
 
-    
+    # On filtre seulement si le champ est rempli par l'utilisateur
+
+    if requete_decode['nom_gene']:
+        result = result.filter(nom_gene=requete_decode['nom_gene'])
+        
+    if requete_decode['nom_transcrit']:
+        result = result.filter(nom_transcrit= requete_decode['nom_transcrit'])
+        
+    if requete_decode['seq_proteine']:
+        result=result.filter(sequence_peptidique__contains=requete_decode['seq_proteine'])
+            
+    if requete_decode['description']:
+        result=result.filter(description__contains=requete_decode['description'])
+
     return render(request, 'projet/r2.html', {'results_gene_prot': result})

@@ -6,6 +6,18 @@
         <meta charset="utf-8">
         <title>Recherche</title>
         <link rel="stylesheet" type="text/css" href="{% static 'projet/style.css' %}">
+        <script>
+            document.getElementById("champ_cache").style.display = "none";
+
+            function afficher()
+            {
+	            document.getElementById("champ_cache").style.display = "block";
+            }
+            function cacher()
+            {
+	            document.getElementById("champ_cache").style.display = "none";
+            }
+        </script> 
 
         <style>
 
@@ -42,9 +54,6 @@
             float:none;
             width: 100%;
         }
-            
-
-
 
         </style>
     </head>
@@ -52,66 +61,76 @@
     <body>
         <h1>Recherche</h1>
         <form method="post" action="{% url 'projet:accueil' %}">
-
+            {% csrf_token %}
             <div class="box">
             <legend for="seq-search">Sequence :</legend>
             <input type="search" id="seq-search" name="seq">
 
-            <br><br>
-
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <br>
+            {% endif %}
+            <br>
+            
             <legend for="espece-search">Espece :</legend>
             <input type="search" id="espece-search" name="espece">
 
             <br><br>
 
             <legend>Résultats souhaités :</legend>
-            <!--<form action="" method="post" name ="type_recherche" >
-                <input type="radio" id="genome" value="genome" >genome</label>
-                <input type="radio" id="gene_prot" value="gene_prot" checked>gene/proteine</label>
-            </form>
-            !-->
-            <!--<form method = POST action ="">
-                <input type="radio" name="type_recherche" value="genome" >genome<br>
-                <input type="radio" name="type_recherche" value="gene_prot" checked>gene/proteine<br>
-            </form>!-->
+            <br>
 
-            {% csrf_token %}
-            {{ form.as_p }}
-            
-            
+            <input type="radio" name="type_recherche" value="genome" id="genome" onClick="cacher();" />
+            <label for="genome">genome</label>
+            <input type="radio" name="type_recherche" value="gene_prot" id="gene_prot" onClick="afficher();" />
+            <label for="gene_prot">gene/proteine</label>
+            <div hidden id=champ_cache>
+
+                <fieldset>
+                    <legend>A repondre seulement si recherche gene/proteine :</legend>
+                    <br>
+                    <legend for="nom_gene-search">Nom gene :</legend>
+                    <input type="search" id="nom_gene-search" name="nom_gene">
+
+                    <br><br>
+
+                    <legend for="nom_transcrit-search">Nom transcrit :</legend>
+                    <input type="search" id="nom_transcrit-search" name="nom_transcrit">
+
+                    <br><br>
+
+                    <legend for="description-search">Description :</legend>
+                    <input type="search" id="description-search" name="description">
+
+                    <br><br>
+
+                    <legend for="seq_prot-search">Sequence proteique :</legend>
+                    <input type="search" id="seq_prot-search" name="seq_prot">
+                    <br>
+                </fieldset>
+
+            </div>
+
             <br><br>
-            <fieldset>
-                <legend>A repondre seulement si recherche gene/proteine :</legend>
-                <br>
-                <legend for="nom_gene-search">Nom gene :</legend>
-                <input type="search" id="nom_gene-search" name="nom_gene">
-
-                <br><br>
-
-                <legend for="nom_transcrit-search">Nom transcrit :</legend>
-                <input type="search" id="nom_transcrit-search" name="nom_transcrit">
-
-                <br><br>
-
-                <legend for="description-search">Description :</legend>
-                <input type="search" id="description-search" name="description">
-
-                <br><br>
-
-                <legend for="seq_prot-search">Sequence proteique :</legend>
-                <input type="search" id="seq_prot-search" name="seq_prot">
-                <br>
-            </fieldset>
-
             <button type="submit" value="Submit">Résultat</button></a>
         </form>
         </div>
+
 
         <div>
         <ul id="menu-vertical">
             <li><a href="http://127.0.0.1:8000/projet/connexion/"><button>Connexion</button></a></li>
             <li><a href="http://127.0.0.1:8000/projet/inscription/"><button>Insciption</button></a></li>
-            <li><a href="http://127.0.0.1:8000/projet/annot/"><button>Annotation</button></a></li>
+            {% if user %}
+                {% if user.roles != 'user' %}
+                    <li><a href="http://127.0.0.1:8000/projet/annot/"><button>Annotation</button></a></li>
+                {% endif %}
+            {% endif %}
         </ul>
         </div>
 

@@ -1,22 +1,29 @@
 import datetime
+from django.conf import settings
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import AbstractUser
 
-class Utilisateur(models.Model):
-    email = models.EmailField(primary_key=True)
-    nom = models.CharField(max_length=30)
-    prenom = models.CharField(max_length=30)
-    mot_de_passe= models.CharField(max_length=30)
-    tel = models.IntegerField()#max_length=30)
+class Utilisateur(AbstractUser):
+     
     roles = models.CharField(max_length=100,choices=(("annot","annotateur"),("val", "validateur"),("user","utilisateur")),default="user")
-    # Rajouter date et heure, il doit exister une fonction pour ça
-    
+    tel = models.IntegerField()
+    AbstractUser.username = models.OneToOneField(AbstractUser, on_delete=models.CASCADE)
+    AbstractUser.email = models.EmailField(max_length=30)
+    AbstractUser.last_name = models.CharField(max_length=30)
+    AbstractUser.first_name = models.CharField(max_length=30)
+    AbstractUser.password= models.CharField(max_length=30)
+
 
 class Genome(models.Model):
     Id_genome = models.CharField(max_length=100,primary_key=True)
     taille_sequence = models.CharField(max_length=100,blank=True,null=True)
     sequence_genome = models.TextField(null=True,blank=True)
     espece = models.CharField(max_length=100,null=True)
+
+    # Afficher uniquement l'id lorsqu'on veut print un objet
+    def __str__(self) -> str:
+        return self.Id_genome
 
 class Annotation(models.Model):
     Id_genome = models.ForeignKey(Genome,on_delete=models.CASCADE)#,primary_key=True)

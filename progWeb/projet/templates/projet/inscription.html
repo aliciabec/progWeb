@@ -14,11 +14,16 @@
 
     <body>
         <h1>Inscription</h1>
-        <form action="createuser" method="post">
+        <form action="{% url 'projet:inscription' %}" method="post">
             {% csrf_token %}
 
             <div class="container">
                 <h5>Remplissez les champs suivants</h5> 
+
+                <legend for="username-search">Votre username :</legend>
+                <input type="search" placeholder="Entrez votre username" id="username-search" name="username">
+
+                <br><br>
                 <legend for="email-search">Votre email :</legend>
                 <input type="search" placeholder="Entrez votre email" id="email-search" name="email">
 
@@ -26,7 +31,7 @@
 
                 <legend for="pass_id-search">Votre mot de passe :</legend>
                 <input type="password" placeholder="Entrez votre mot de passe" id="pass_id-search" name="pass_word_id">
-
+                
                 <br><br>
 
                 <legend for="nom-search">Votre nom :</legend>
@@ -49,17 +54,13 @@
                     <br>
                         <label for="role">Les rôles: </label>
                         <select name="roles" id="role">
-                          <option value="lecteur">Lecteur</option>
-                          <option value="annotateur">Annotateur</option>
-                          <option value="validateur">Validateur</option>
+                            <option value="lecteur">Lecteur</option>
+                            <option value="annotateur">Annotateur</option>
+                            <option value="validateur">Validateur</option>
                         </select>
-                       
-
-        
                 </fieldset>
 
                 <button type="submit">S'inscrire</button></a>
-
                 <br><br>
             </div>
         </form>

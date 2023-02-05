@@ -1,125 +1,104 @@
 from django.utils import timezone
-from django.template import loader
-### from .models import Choice, Question => c'est ici qu'il faudra importer les tables !!
-from django.http import HttpResponse, HttpResponseRedirect, Http404, HttpRequest
-from django.shortcuts import get_object_or_404, render
+from django.template import loader,RequestContext
+from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
-from django.template import RequestContext
-from django.views import generic ### cette ligne nous permet d'avoir une classe qui va
-### pouvoir nous donnée des type de list generic
-### La vue générique DetailView s’attend à ce que la clé primaire capturée dans l’URL s’appelle "pk",
-### nous avons donc changé question_id en pk pour les vues génériques.
+from django.views import generic 
 from projet.models import Genome, Gene_prot, Annotation, Utilisateur
-from projet.forms import MyForm
-import pickle
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+import json
+import base64
 
 def accueil(request):
+    user = None
+    if request.user.is_authenticated:
+        user = request.user
     
     if request.method == 'POST':
-        #print(request)
+        
+        if len(request.POST.get('seq')) < 3:
+            # Message d'erreur si l'utilisateur rentre un nombre de nucléotide inférieur à 3.
+            messages.add_message(request, messages.ERROR, 'Au moins trois caractères sont nécessaires.')
+            return render(request, 'projet/accueil.html')
 
-        form = MyForm(request.POST)  
-        #print(request.POST.keys())
+        if request.POST.get('type_recherche') == "genome" :
+            requete = {}
+            requete['sequence'] = request.POST.get('seq')
+            requete['espece'] = request.POST.get('espece')
+            # Encode the JSON string with base64
+            requete_encode = base64.b64encode(json.dumps(requete).encode("utf-8"))
 
-        ## Récuperation des infos 
-        sequence = request.POST['seq']
-        espece = request.POST['espece']
-        #print(espece)
+            return HttpResponseRedirect(reverse('projet:r1', args=(requete_encode.decode("utf-8"),)))
 
-        if form.is_valid():
-            selected_value = 'r1/'
+        elif request.POST.get('type_recherche') == "gene_prot" :
+            requete = {}
+            requete['sequence'] = request.POST.get('seq')
+            requete['espece'] = request.POST.get('espece')
+            requete['nom_gene'] = request.POST.get('nom_gene')
+            requete['nom_transcrit'] = request.POST.get('nom_transcrit')
+            requete['description'] = request.POST.get('description')
+            requete['seq_proteine'] = request.POST.get('seq_prot')
 
-            if request.POST.get('my_field') == "r1" : 
-                #print("TEST")   
-                
-                qs = Genome.objects.values_list('Id_genome','taille_sequence', 'espece').filter(sequence_genome__contains=sequence).filter(espece=espece)
-                #return HttpRequest.POST.get(reverse('projet:r1'))
-                return HttpResponseRedirect(reverse('projet:r1'))
+            # Encode the JSON string with base64
+            requete_encode = base64.b64encode(json.dumps(requete).encode("utf-8"))
 
-
-            elif request.POST.get('my_field') == "r2" : 
-
-                nom_gene = request.POST['nom_gene']
-                nom_transcrit = request.POST['nom_transcrit']
-                description = request.POST['description']
-                seq_prot = request.POST['seq_prot']
-
-
-                return HttpResponseRedirect(reverse('projet:r2'))
-
-        ## Requetes SQL
-       
-        """
-        elif type_resultat== "Gene_prot":
-
-            Gene_prot.objects.all().filter(nom_transcrit = nom_transcrit,
-            nom_gene = nom_gene ,sequence_peptidique = seq_prot, )
-        """
+            return HttpResponseRedirect(reverse('projet:r2', args=(requete_encode.decode("utf-8"),)))
 
     else:
-        form = MyForm()
-
-    return render(request, 'projet/accueil.html', {"form":form})
+        return render(request, 'projet/accueil.html',{"user": user})
 
 
+def connexion(request):
+    if request.method == 'POST':
+
+        username = request.POST.get('username')
+        password = request.POST.get('pass_word_id')
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect(reverse('projet:accueil'))
+
+            # Redirect to a success page.
+        else:
+            # Return an 'invalid login' error message.
+            messages.add_message(request, messages.ERROR, 'Incorrect username or password.')
+            return render(request, 'projet/connexion.html')
+
+    else:
+        # The request is not a POST, so display the login form.
+        # This scenario would most likely be a GET.
+        return render(request, 'projet/connexion.html')
 
 
-class Connexion(generic.ListView):
-    template_name = 'projet/connexion.html'
-    def get_queryset(self):
-#        """
-##        Return the last five published questions (not including those set to be
-#        published in the future).
-#        """
-        print(self.request.user)
-        return 0
+def inscription(request): 
+    if request.method == 'POST':
+        ## Etapes de recuperation de la valeur de role  
 
+        role = 'user'
+        if request.POST.get('roles') == "lecteur":
+            role = 'user'
+        elif request.POST.get('roles') == "annotateur":
+            role = 'annot'
+        elif request.POST.get('roles') == "validateur":
+            role = 'val'
 
-
-class Inscription(generic.ListView):
-    template_name = 'projet/inscription.html'
-    def get_queryset(self):
-
-        return 0
-    
- 
-    def create_user(self):   
-        ## test pour le role
-        roles = ""
-        print(self.GET)
-        print(self.POST)
-        print(self.POST.keys())
-        if self.POST['roles'] == "lecteur":
-            roles = 'user'
-        elif self.POST['roles'] == "annotateur":
-            roles = 'annot'
-        elif self.POST['roles'] == "validateur":
-            roles = 'val'
-        Utilisateur(email = self.POST['email']
-                    , nom = self.POST['nom']
-                    , prenom= self.POST['prenom']
-                    , mot_de_passe = self.POST['pass_word_id']
-                    , tel = self.POST['tel']
-                    , roles = roles).save()
-
-        return HttpResponseRedirect('/projet/thanks/', RequestContext(self) )
+        ## Creation de l'utlisateur avec les informations rentrees par l'utilisateur 
+        Utilisateur.objects.create_user(username = request.POST.get('username')
+                    , email = request.POST.get('email')
+                    , last_name = request.POST.get('nom')
+                    , first_name= request.POST.get('prenom')
+                    , password = request.POST.get('pass_word_id')
+                    , tel = request.POST.get('tel')
+                    , roles = role).save()
+        return HttpResponseRedirect(reverse('projet:connexion'))
+    else: 
+        return render(request, 'projet/inscription.html')
 
 
 
 class Annotation(generic.ListView):
     template_name = 'projet/annotation.html'
-    def get_queryset(self):
-#        """
-##        Return the last five published questions (not including those set to be
-#        published in the future).
-#        """
-        print(self.request.user)
-        return 0
-
-
-
-class Thanks(generic.ListView):
-    template_name = 'projet/thanks.html'
     def get_queryset(self):
 #        """
 ##        Return the last five published questions (not including those set to be
@@ -139,34 +118,42 @@ class Annot(generic.ListView):
         print(self.request.user)
         return 0
 
+def r1(request, requete):
+    # Decode la requete
+    requete_decode = json.loads(base64.b64decode(requete.encode("utf-8")).decode("utf-8"))
 
-class R1(generic.ListView):
-    template_name = 'projet/r1.html'
-    context_object_name = 'results_genomique'
-    def get_queryset(request):
-        print("TEST")
-        #print(request.get['seq'])
-        return Genome.objects.all() 
-        
-        
+    # On initialise result avec tous les objects du Genome avec le filtre sur la sequence qui ne peut pas etre vide
+    result = Genome.objects.filter(sequence_genome__contains=requete_decode['sequence'])
+    print("TEST")
+    print(result)
 
-class R2(generic.ListView):
-    template_name = 'projet/r2.html'
-    context_object_name = 'results_gene_prot'
-    def get_queryset(request):
+    # On filtre seulement si le champ est rempli par l'utilisateur
+    # Pour le Genome seul le champ espece peut etre vide parmis les deux champs à remplir (sequence et espece)
 
-        #print(request.GET.keys())
-        #print(request.POST.keys())
-        #print(request.user)
-        #print(request.user)
-        #print(request)
-        print('test')
-                
-        sequence = "" #self.request.GET['seq']
-        espece = "" #self.request.GET['espece']
-
-        
-        results = Gene_prot.objects.filter(pk= 'AAN78501').all()
-        print(results)
-        return results.objects.all()
+    if requete_decode['espece']:
+        result = result.filter(espece=requete_decode['espece'])
  
+    return render(request, 'projet/r1.html', {'results_genomique': result})
+
+def r2(request, requete):
+    # Decode la requete
+    requete_decode = json.loads(base64.b64decode(requete.encode("utf-8")).decode("utf-8"))
+
+    # On initialise result avec tous les objects du Gene_prot avec le filtre sur la sequence qui ne peut pas etre vide
+    result = Gene_prot.objects.filter(sequence_nucleotidique__contains=requete_decode['sequence'])
+
+    # On filtre seulement si le champ est rempli par l'utilisateur
+
+    if requete_decode['nom_gene']:
+        result = result.filter(nom_gene=requete_decode['nom_gene'])
+        
+    if requete_decode['nom_transcrit']:
+        result = result.filter(nom_transcrit= requete_decode['nom_transcrit'])
+        
+    if requete_decode['seq_proteine']:
+        result=result.filter(sequence_peptidique__contains=requete_decode['seq_proteine'])
+            
+    if requete_decode['description']:
+        result=result.filter(description__contains=requete_decode['description'])
+
+    return render(request, 'projet/r2.html', {'results_gene_prot': result})

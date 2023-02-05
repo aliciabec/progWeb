@@ -4,8 +4,8 @@
     <head>
     <!--	<meta charset="UTF-8"> -->
         <meta charset="utf-8">
-        <title>Annotation </title>
-        <link rel="stylesheet" type="text/css" href="{% static 'res1/r.css' %}">
+        <title>RésultatsP </title>
+        <link rel="stylesheet" type="text/css" href="{% static 'projet/r.css' %}">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -38,7 +38,7 @@
     </head>
     
     <body>
-        <h1>Résultats Génome</h1>
+        <h1>Résultats Gène/Protéine</h1>
         <form method="get" action="{% url 'projet:accueil' %}">
 
         {% if results_gene_prot %}
@@ -47,7 +47,7 @@
             {% for genome_prot in results_gene_prot %}
             <H1  style="text-align:center">{{forloop.counter}} - {{genome_prot.Id_genome}}</H1>
 
-            <h2>Résumé</h2>
+            <h2><strong>Résumé : </h2>
 
             <table style="border:1px solid black;margin-left:auto;margin-right:auto;">
                 <tr>
@@ -67,18 +67,18 @@
                 </tr>
             </table>
     
-            <h2>Séquence nucléotidique</h2>
+            <h2><strong>Séquence nucléotidique : </h2>
 
             <button class="buttonclipboard" onclick="copyText('sequence_nuc')">Copier la séquence dans le presse papier</button>
-
+            <div style="width:1800px;height:500px;line-height:3em;overflow:scroll;padding:5px;background-color: white  ;color:black  ; border: 2px solid green;">
             <p  id="sequence_nuc" class = "clipboard" style="word-wrap: break-word;">{{genome_prot.sequence_nucleotidique}}</p>
             
-            
-            <h2>Séquence peptidique</h2>
+            </div>
+            <h2><strong>Séquence peptidique : </h2>
             <button class="buttonclipboard" onclick="copyText('sequence_pep')">Copier la séquence dans le presse papier</button>
-
+            <div style="width:1800px;height:500px;line-height:3em;overflow:scroll;padding:5px;background-color: white  ;color:black  ; border: 2px solid green;">
             <p  id="sequence_pep" class="clipboard" style="word-wrap: break-word;">{{genome_prot.sequence_peptidique}}</p>
-
+            </div>
             
             {% endfor %}
 

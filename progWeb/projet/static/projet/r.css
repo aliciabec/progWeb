@@ -1,9 +1,21 @@
 h1 {
-    font-size: 60px;
+    font-size: 50px;
     text-align: center;
     }
+h2 {
+    font-size: 25px;
+    font: 1rem 'Fira Sans', sans-serif;
+}
 p {
     font-size: 18px;
+    font: 1rem 'Fira Sans', sans-serif;
+}
+p1 {
+    font-size: 18px;
+    font: 1rem 'Fira Sans', sans-serif;
+}
+p2 {
+    font-size: 25px;
     font: 1rem 'Fira Sans', sans-serif;
 }
 legend {
@@ -25,7 +37,7 @@ button {
     margin: 10px 0px;   
     border: none;   
     cursor: pointer;   
-     }   
+     }  
 
 input[type=search], input[type=password] {   
     width: 45%;   
@@ -35,7 +47,28 @@ input[type=search], input[type=password] {
     border: 2px solid green;   
     box-sizing: border-box;   
 }
-    
+input[type=button] {
+    background-color: grey;   
+    width: 25%;  
+    font: 1rem 'Fira Sans', sans-serif;
+    color: white;   
+    padding: 10px;   
+    margin: 10px 0px;   
+    border: none;   
+    cursor: pointer;
+
+}
+.box {   
+    padding: 25px;  
+    width: 1800px;
+    height: 500px;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: scroll;
+
+} 
 
  .container {   
     position: relative;

@@ -122,13 +122,6 @@ def r1(request, requete):
     # Decode la requete
     requete_decode = json.loads(base64.b64decode(requete.encode("utf-8")).decode("utf-8"))
 
-    """
-    #Si l'utilisateur n'a rien rempli (excepté le champ sequence qui est obligatoire) dans les champs Genome:
-    if requete_decode['sequence']:
-        if not requete_decode:
-            return render(request, 'projet/r1.html', {'results_genomique': None})
-    """
-
     # On initialise result avec tous les objects du Genome avec le filtre sur la sequence qui ne peut pas etre vide
     result = Genome.objects.filter(sequence_genome__contains=requete_decode['sequence'])
     print("TEST")

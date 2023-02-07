@@ -1,6 +1,6 @@
 from django.utils import timezone
 from django.template import loader,RequestContext
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.views import generic 
@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 import json
 import base64
+
 
 def accueil(request):
     user = None
@@ -41,7 +42,6 @@ def connexion(request):
         if user is not None:
             login(request, user)
             return HttpResponseRedirect(reverse('projet:accueil'))
-
             # Redirect to a success page.
         else:
             # Return an 'invalid login' error message.
@@ -70,7 +70,7 @@ def inscription(request):
         Utilisateur.objects.create_user(username = request.POST.get('username')
                     , email = request.POST.get('email')
                     , last_name = request.POST.get('nom')
-                    , first_name= request.POST.get('prenom')
+                    , first_name = request.POST.get('prenom')
                     , password = request.POST.get('pass_word_id')
                     , tel = request.POST.get('tel')
                     , roles = role).save()
@@ -79,34 +79,52 @@ def inscription(request):
         return render(request, 'projet/inscription.html')
 
 
+def annotation(request, pk):
+    annotation = get_object_or_404(Annotation, pk=pk)
+    ### cet object va recupere tout ce qui possède le meme Id_genome que l'annotation dans la classe gene_prot
+    id_genome = annotation.Id_genome.Id_genome
+    gene_prot_id_genome = Gene_prot.objects.filter(Id_genome = id_genome)
+    
+    if request.method == 'POST':
+        if request.POST.get('gene_p') and request.POST.get('nom_gene') and request.POST.get('description'): 
+            gene_prot = gene_prot_id_genome.filter(nom_transcrit = request.POST.get('gene_p'))[0]
+            gene_prot.nom_gene = request.POST.get('nom_gene')
+            gene_prot.description = request.POST.get('description')
+            gene_prot.save()
+        else : 
+            messages.add_message(request, messages.ERROR, 'Nom du gene ou/et description vide.')
 
-class Annotation(generic.ListView):
-    template_name = 'projet/annotation.html'
-    def get_queryset(self):
-#        """
-##        Return the last five published questions (not including those set to be
-#        published in the future).
-#        """
-        print(self.request.user)
-        return 0
+        if not request.POST.get('fin_annotation'):
+            ### boucle qui va nous permettre de mettre a jour la variable estAnnot ou non l'annotation
+            if request.POST.get('espece'):
+                genome_selected = Genome.objects.get(Id_genome = id_genome)
+                genome_selected.espece = request.POST.get('espece')
+                genome_selected.save()
+            else : 
+                messages.add_message(request, messages.ERROR, 'Il n\'y a pas de nom d\'espece.')
+
+            annotation.estAnnote = True
+            for gene in gene_prot_id_genome:
+                if gene.description == None or gene.nom_gene == None or Genome.objects.get(Id_genome = id_genome).espece == None:
+                    annotation.estAnnote = False
+
+            if annotation.estAnnote:
+                return HttpResponseRedirect(reverse('projet:annot'))
+            else: 
+                messages.add_message(request, messages.ERROR, 'Tous les genes ne sont pas annoté.')
+
+    return render(request, 'projet/annotation.html', context={'annotation': annotation, 'gene_prot':gene_prot_id_genome
+        , 'gene_json' :json.dumps(list(gene_prot_id_genome.values()),default=str)}) 
+    ### ici on va renvoyer les annotations pour avoir Id_genome, les gene_prot selectionne pour avoir les genes 
+    ### mais notamment gene_json qui est une conversion de gene_prot en json pour l'utliser dans le javascript
 
 
 class Annot(generic.ListView):
     template_name = 'projet/annot.html'
+    context_object_name = 'users'
+    
     def get_queryset(self):
-#        """
-##        Return the last five published questions (not including those set to be
-#        published in the future).
-#        """
-        print(self.request.user)
-        return 0
-
-
-#class R1(generic.ListView):
-#    template_name = 'projet/r1.html'
-#    context_object_name = 'results_genomique'
-#    def get_queryset(self, requete):
-#        return requete
+        return Utilisateur.objects.filter(roles = 'annot')
 
 def r1(request, requete):
     # Decode la requete

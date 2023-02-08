@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'projet.apps.ProjetConfig',
     'django_extensions',
+    'blast',
 ]
 
 MIDDLEWARE = [

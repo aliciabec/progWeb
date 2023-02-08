@@ -1,5 +1,4 @@
 {% load static %}
-
 <html lang="fr">
     <head>
     <!--	<meta charset="UTF-8"> -->
@@ -14,7 +13,7 @@
         </style>
       
     </head>
-    
+
     <body>
         <h1>Résultats Génome</h1>
         <form method="get" action="{% url 'projet:accueil' %}">
@@ -41,9 +40,20 @@
     
             <h2><strong>Séquence :</h2>
             <div style="width:1800px;height:500px;line-height:3em;overflow:scroll;padding:5px;background-color: white  ;color:black  ; border: 2px solid green;">
-            <p  id="sequence" style="word-wrap: break-word;">{{genome.sequence_genome}}</p>
+            <p  id="sequence" style="word-wrap: break-word;">
+            {{genome.sequence_genome}}
             </div>
             {% endfor %}
+            
+            {% if genome.Id_genome == genome_prot.Id_genome %}
+            <div class="color-Me">
+                <p {% for i in genome_prot.nom_transcrit %}
+                    <h3 style="color= green">{{genome_prot.nom_transcrit}}</h3>
+        
+                {% endfor %}> 
+                </div>
+                </p>
+            {% endif %}
 
         </form>     
         <br><br>

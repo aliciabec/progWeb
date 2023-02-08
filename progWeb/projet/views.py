@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 import json
 import base64
+import requests
 
 def accueil(request):
     user = None
@@ -157,3 +158,12 @@ def r2(request, requete):
         result=result.filter(description__contains=requete_decode['description'])
 
     return render(request, 'projet/r2.html', {'results_gene_prot': result})
+
+
+def home(request):
+    response = requests.get('http://freegeoip.net/json/')
+    geodata = response.json()
+    return render(request, 'core/home.html', {
+        'ip': geodata['ip'],
+        'country': geodata['country_name']
+    })

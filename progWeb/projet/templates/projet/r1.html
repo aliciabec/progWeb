@@ -40,9 +40,15 @@
             </table>
     
             <h2><strong>Séquence :</h2>
+
             <div style="width:1800px;height:500px;line-height:3em;overflow:scroll;padding:5px;background-color: white  ;color:black  ; border: 2px solid green;">
             <p  id="sequence" style="word-wrap: break-word;">{{genome.sequence_genome}}</p>
             </div>
+            {% endfor %}
+
+            {% for gene in results_transcrits %}
+                <p> {{gene.start_position}} </p>
+                <p> {{gene.end_position}} </p>
             {% endfor %}
 
         </form>     

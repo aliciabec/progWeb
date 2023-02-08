@@ -129,16 +129,22 @@ def r1(request, requete):
 
     # On initialise result avec tous les objects du Genome avec le filtre sur la sequence qui ne peut pas etre vide
     result = Genome.objects.filter(sequence_genome__contains=requete_decode['sequence'])
-    print("TEST")
-    print(result)
-
     # On filtre seulement si le champ est rempli par l'utilisateur
     # Pour le Genome seul le champ espece peut etre vide parmis les deux champs à remplir (sequence et espece)
 
     if requete_decode['espece']:
         result = result.filter(espece=requete_decode['espece'])
- 
-    return render(request, 'projet/r1.html', {'results_genomique': result})
+    
+    for genome in result:
+        print("TEST")
+        result2 = Gene_prot.objects.filter(Id_genome=genome)
+        print(result2)
+    
+    return render(request, 'projet/r1.html', {'results_genomique': result,'results_transcrits': result2 })
+
+
+    ## On récupére les positions des gènes
+    #if result[""]
 
 def r2(request, requete):
     # Decode la requete

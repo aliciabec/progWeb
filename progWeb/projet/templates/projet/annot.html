@@ -11,21 +11,45 @@
     
     <body>
         <h1>Annotation</h1>
-        <p>Liste des annotations en attente de validation :
-        </p>
-        <br><br>
+        <form method="post" action="{% url 'projet:annot' %}">
+            {% csrf_token %}
+            <p>Liste des annotations en attente de validation :</p>
 
-        <button type="submit">Annotation 1</button>
-        
-        <p>Liste des annotations non annotés :
-            Choisissez une séquence que vous voulez commener l'annotation:
-        </p>
-        <br><br>
-        <p2>Annotation 1 : </p2>
-        <button>Définir un annotateur</button>
-        <a href="http://127.0.0.1:8000/projet/annotation/"><button>Annotation 1</button></a>
-        <button>Valider</button>
-        <br><br>
+            <br><br>
+
+            <p2>Annotation 1 : </p2>
+            <button type="submit">Annotation 1</button>
+
+            <br><br>
+            
+            
+            <p>Liste des annotations non annotés :
+                Choisissez une séquence que vous voulez commener l'annotation:
+            </p>
+
+            <br><br>
+
+            <p2>Annotation 1 : </p2>
+
+            {% if user.roles == 'val' %}
+                <select name="annot" id="annot">
+                <optgroup label="Définir un annotateur"></optgroup>
+                {% for Utilisateur in liste_annot %}
+                        <option value="default" selected hidden>Définir un annotateur</option>
+                        <option value="liste_annot">{{ Utilisateur }} </option> 
+            {% endfor %}
+            
+            {% endif%}
+            </optgroup>
+            </select>
+            
+            {% if user.roles == 'annot' %}
+                <a href="http://127.0.0.1:8000/projet/annotation/"><button>Annoter</button></a>
+            {% endif%}
+            
+            
+            <br><br>
+        </form>
         
         <br><br>
 

@@ -121,10 +121,25 @@ def annotation(request, pk):
 
 class Annot(generic.ListView):
     template_name = 'projet/annot.html'
-    context_object_name = 'users'
-    
+    context_object_name = 'liste_annot'
+    def val_or_annot(request):
+        user = None
+        if request.user.is_authenticated:
+            user = request.user
     def get_queryset(self):
-        return Utilisateur.objects.filter(roles = 'annot')
+#        """
+##        Return the last five published questions (not including those set to be
+#        published in the future).
+#        """
+        #print(self.request.user)
+        return Utilisateur.objects.filter(roles='annot')
+
+
+#class R1(generic.ListView):
+#    template_name = 'projet/r1.html'
+#    context_object_name = 'results_genomique'
+#    def get_queryset(self, requete):
+#        return requete
 
 def r1(request, requete):
     # Decode la requete

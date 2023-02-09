@@ -13,64 +13,93 @@
     </head>
 
     <body>
-        <h1>Annotation</h1>
         <div class="container">
-                    <fieldset>
-                        <legend>s&eacute;quence affect&eacute;e :</legend>
-                        <br>
-                        <br>
-            
-                    </fieldset>
+            <form action="{% url 'projet:annotation' annotation.id %}" method="post">
+                {% csrf_token %}
+                <h1>{{annotation.Id_genome.Id_genome}}</h1>
+                <!--<fieldset>
+                    <legend>s&eacute;quence affect&eacute;e :</legend>
+                    Peut-etre qu'il faudrait rajouter ici les fichiers ? 
+                    <br><br>
+                </fieldset>-->
+                <br>
+                
+                <legend for="espece-search">Espece :</legend>
+                <input type="search" placeholder="Ex: Escherichia_coli_str_k_12_substr_mg1655" id="transtype-search" name="espece">
+
+                <br><br>
+
+                <fieldset>
+                    <legend>Choisissez le gène que vous souhaitez annoter :</legend>
+                    <br>
+                    <label for="gene_p">Nom transcrit : </label>
+                    <select name="gene_p" id="gene_p">
+                        {% if gene_prot %}
+                            {% for gene in gene_prot %}
+                                <option value="{{gene.nom_transcrit}}">{{gene.nom_transcrit}}</option>
+                            {%endfor%}
+                        {%endif%}
+                    </select>
+
+                    <p>Séquence nécleotidique : </p>
+                    <div style="overflow-x:scroll;width: 600px;" >
+                        <pre id="selectedSeq"></pre>
+                    </div>
+
+                    <p>Séquence protéique : </p>
+                    <div style="overflow-x:scroll;width: 600px;" >
+                        <pre id="selectedSeqProt"></pre>
+                    </div>
+
+                    <br>
+                    <legend for="gene-search">Nom du gène :</legend>
+                    <input type="search" placeholder="Ex: c1655" id="transtype-search" name="nom_gene">
 
                     <br><br>
 
-                    <legend for="Seqid-search">Identifiant de la s&eacute;quence :</legend>
-                    <input type="search" placeholder="Ex: AAN78501" id="Seqid-search" name="Seqid">
-
-                    <br><br>
-
-                    <legend for="Seqtype-search">Type de la s&eacute;quence :</legend>
-                    <input type="search" placeholder="Ex: cds" id="Seqtype-search" name="Seqtype">
-
-                    <br><br>
-
-                    <legend for="chr-search">Information chromosomique :</legend>
-                    <input type="search" placeholder="Ex: ASM744v1:Chromosome:190:255:1" id="chr-search" name="chr">
-
-                    <br><br>
-
-                    <legend for="gene-search">Nom du g&egrave;ne :</legend>
-                    <input type="search" placeholder="Ex: c5491" id="gene-search" name="gene">
-
-                    <br><br>
-
-                    <legend for="genetype-search">Type du g&egrave;ne :</legend>
-                    <input type="search" placeholder="Ex: protein_coding" id="genetype-search" name="genetype">
-
-                    <br><br>
-
-                    <legend for="transtype-search">Type du transcrit :</legend>
-                    <input type="search" placeholder="Ex: protein_coding" id="transtype-search" name="transtype">
-
-                    <br><br>
+                    <legend for="description-search">Description :</legend>
+                    <input type="search" placeholder="Ex: Hypothetical protein" id="transtype-search" name="description">
                     
-                    <legend for="genesym-search">Symbol du g&egrave;ne :</legend>
-                    <input type="search" placeholder="Ex: thrL" id="genesym-search" name="genesym">
 
-                    <br><br>
+                    {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <br>
+                    {% endif %}
+                    <input name="annot_gene" type="submit" style = "float: right;" value="Annoter ce gène"> 
 
-                    <legend for="genedescrip-search">D&eacute;scription du g&egrave;ne :</legend>
-                    <input type="search" placeholder="Ex: Thr operon leader peptide" id="genedescrip-search" name="genedescrip">
 
-                    <br><br>
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script type="text/javascript">
+                        // Ce code nous permet de recuper les sequences en fonction de notre nom_transcrit                             
+                        var gene_prot = JSON.parse("{{gene_json|escapejs|safe}}");
+                        document.getElementById("gene_p").addEventListener("change", function() {
+                            var selectedValue = this.value;
+                            var selectedGene = gene_prot.find(function(gene_prot) {
+                                return gene_prot.nom_transcrit === selectedValue;
+                            });
+                            document.getElementById("selectedSeq").innerHTML = selectedGene.sequence_nucleotidique;
+                            document.getElementById("selectedSeqProt").innerHTML = selectedGene.sequence_peptidique;
 
-                    <button type="submit">Annoter</button>  
+                        });
 
-                    <br><br>
+                    </script>
+                    
+                </fieldset>
+
+
+                <br><br>
+
+                <input name="fin_annotation" type="submit" value="Annoter" >
+
+                <br><br>
+
+            </form>
         </div>
-
-        </from>
-
     </body>
 </html>
 

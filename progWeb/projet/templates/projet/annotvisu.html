@@ -1,0 +1,99 @@
+{% load static %}
+
+<html lang="fr">
+    
+    <head>
+    <!--	<meta charset="UTF-8"> -->
+        <meta charset="utf-8">
+        <title>Annotation</title>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="{% static 'projet/annotation.css' %}">   
+    
+    
+    </head>
+
+    <body>
+        <div class="container">
+            <form action="{% url 'projet:annotation' annotation.id %}" method="post">
+                {% csrf_token %}
+                <h1>{{annotation.Id_genome.Id_genome}}</h1>
+                <!--<fieldset>
+                    <legend>s&eacute;quence affect&eacute;e :</legend>
+                    Peut-etre qu'il faudrait rajouter ici les fichiers ? 
+                    <br><br>
+                </fieldset>-->
+                <br>
+                
+                <legend for="gene-search">Espèce :</legend> <pre>{{genome.espece}}</pre>
+
+                <br><br>
+
+                <fieldset>
+                    <legend>Choisissez le gène que vous souhaitez annoter :</legend>
+                    <br>
+                    <label for="gene_p">Nom transcrit : </label>
+                    <select name="gene_p" id="gene_p">
+                        {% if gene_prot %}
+                            {% for gene in gene_prot %}
+                                <option value="{{gene.nom_transcrit}}">{{gene.nom_transcrit}}</option>
+                            {%endfor%}
+                        {%endif%}
+                    </select>
+
+                    <p>Séquence nécleotidique : </p>
+                    <div style="overflow-x:scroll;width: 600px;" >
+                        <pre id="selectedSeq"></pre>
+                    </div>
+
+                    <p>Séquence protéique : </p>
+                    <div style="overflow-x:scroll;width: 600px;" >
+                        <pre id="selectedSeqProt"></pre>
+                    </div>
+
+                    <br>
+                    <legend for="gene-search">Nom du gène :</legend> <pre id="selectedNomGene"></pre>
+
+                    <br><br>
+
+                    <legend for="description-search">Description : </legend> <pre id="selectedDescription"></pre>
+                    
+
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script type="text/javascript">
+                        // Ce code nous permet de recuper les informations en fonction du nom_transcrit                             
+                        var gene_prot = JSON.parse("{{gene_json|escapejs|safe}}");
+                        document.getElementById("gene_p").addEventListener("change", function() {
+                            var selectedValue = this.value;
+                            var selectedGene = gene_prot.find(function(gene_prot) {
+                                return gene_prot.nom_transcrit === selectedValue;
+                            });
+                            document.getElementById("selectedSeq").innerHTML = selectedGene.sequence_nucleotidique;
+                            document.getElementById("selectedSeqProt").innerHTML = selectedGene.sequence_peptidique;
+                            document.getElementById("selectedDescription").innerHTML = selectedGene.description;
+                            document.getElementById("selectedNomGene").innerHTML = selectedGene.nom_gene;
+
+                        });
+
+                    </script>
+                    
+                </fieldset>
+
+
+                <br><br>
+                {% if user.roles == 'val' %}
+                    <button name="Validation" type="submit" >Valider</button>
+                {%endif%}
+                <br><br>
+
+            </form>
+        </div>
+    </body>
+</html>
+
+
+
+
+
+
+
+

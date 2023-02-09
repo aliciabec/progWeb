@@ -11,31 +11,51 @@
     
     <body>
         <h1>Annotation</h1>
-        <p>Liste des annotations en attente de validation :
-        </p>
-        <br><br>
+        <form method="post" action="{% url 'projet:annot' %}">
+            {% csrf_token %}
+            <p>Liste des annotations en attente de validation :</p>
 
-        <button type="submit">Annotation 1</button>
+            <br><br>
+            
+            {% for annotation in annotationAnnote %}
+                <input type="submit" name="button_{{annotation.id}}_annot" value="Annotation {{annotation.id}}" >
+                <br><br>
+            {%endfor%}
+
         
-        <p>Liste des annotations non annotés :
-            Choisissez une séquence que vous voulez commener l'annotation:
-        </p>
-        <br><br>
-        <p2>Annotation 1 : </p2>
-        <button>Définir un annotateur</button>
-        <a href="http://127.0.0.1:8000/projet/annotation/"><button>Annoter</button></a>
-        <button>Valider</button>
-        <br><br>
-        <p2>Annotation 2 : </p2>
-        <button>Définir un annotateur</button>
-        <a href="http://127.0.0.1:8000/projet/annotation/"><button>Annoter</button></a>
-        <button>Valider</button>
-        <br><br>
-        <p2>Annotation n : </p2>
-        <button>Définir un annotateur</button>
-        <a href="http://127.0.0.1:8000/projet/annotation/"><button>Annoter</button></a>
-        <button>Valider</button>
-        <br><br>
+            <br><br>
+            
+            
+            <p>Annotations non annotés :
+            </p>
+            
+            <!-- Affichage des bouton en fonction de si on a un validateur et des annotations attribués -->
+            {% if user.roles == 'val' %}
+                {% for annotation in annotationNonAnnote%}
+                        <label for="{{annotation.id}}"> Annotation {{annotation.id}} : </label>
+                        <select name="{{annotation.id}}" id="{{annotation.id}}">
+                            {% for u in liste_annot %}
+                                <option value="{{u.username}}">{{u.username}}</option>
+                            {%endfor%}
+                        </select>
+                        <input type="submit" name="button_{{annotation.id}}_not_annot" value="OK">
+                    <br><br>
+                {% endfor %}
+            {%endif%}
+            
+            
+            <!-- Affichage des bouton en fonction de si on a un annotateur et si on ete attribués a cette annotation-->
+            {% if user.roles == 'annot' %}
+                {% for annotation in annotationAttribue %}
+                    {%if user.email == annotation.emailAnnotateur.email %}                       
+                        <input type="submit" name="button_{{annotation.id}}_annotateur_def" value="Annotation {{annotation.id}}">
+                    {%endif%}
+                {% endfor %}
+            {% endif%}
+            
+            
+            <br><br>
+        </form>
         
         <br><br>
 

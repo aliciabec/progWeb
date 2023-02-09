@@ -16,44 +16,29 @@
             }
         </style>
         <style>
-            .owners{
-    	    width:500px;
-            height:300px;
-            border:0px solid #ff9d2a;
-            margin:auto;
-            float:left;
-    
-            }
-            span.own1{
-                background:#F8F8F8;
-                border: 5px solid #DFDFDF;
-                color: #717171;
-                font-size: 13px;
-                height: 250px;
-                width:310px;
-                letter-spacing: 1px;
-                line-height: 20px;
-                position:absolute;
+      
+                span[class*=' genetotip'] span[class^='tooltiptext']{
+                visibility: hidden;
+                width: 120px;
+                background-color: black;
+                color: #fff;
                 text-align: center;
-                text-transform: uppercase;
-                top: auto;
-                left:auto;
-                display:none;
-                padding:0 0px;
-                
-                
+                border-radius: 6px;
+                padding: 5px 0;
+
+                /* Position the tooltip */
+                position: absolute;
+                z-index: 1;
             }
             
-            p.own{
-                margin:0px;
-                float:left;
-                position:relative;
-                cursor:pointer;
+            span[class^='genetotip'], span[class*=' genetotip']{
+                position: relative;
+                border-bottom: 1px dotted black;
+
             }
             
-            p.own:hover span{
-                display:block;
-                z-index:9;
+            span[class*=' genetotip']:hover span[class^='tooltiptext']{
+                visibility: visible;
                 }
         </style>
       
@@ -114,27 +99,28 @@
             var inputText = document.getElementById("sequence");
             var  innerHTML = inputText.innerHTML.replace(/ /g,'');
             var newInnerHTML = ""
+            var span = ""
             for (let i = 0; i < list_genes.length; i++){
                 start = list_genes[i].start
                 end = list_genes[i].end
                 
                 //innerHTML = innerHTML.substring(0,start) + "<span class='highlight'>" + innerHTML.substring(start-1,end+1) + "</span>" + innerHTML.substring(end+1, innerHTML.length+1);
-                console.log("i : " + i)
+                /*console.log("i : " + i)
                 console.log("start : " + start)
                 console.log("end : " + end)
                 console.log("innerHTML.length : " + innerHTML.length)
                 console.log("newInnerHTML.length : " + newInnerHTML.length)
-                console.log("newInnerHTML.length : " + newInnerHTML.length)
-                if (i == 0 ){
-                    newInnerHTML = innerHTML.substring(0,start) + "<span class='highlight'>" + innerHTML.substring(start,end+1) + "</span>" + innerHTML.substring(end+1, innerHTML.length+1);
+                console.log("newInnerHTML.length : " + newInnerHTML.length)*/
+                if (i == 0){
+                    span = "<span class='tooltiptext" + i + "'>" + list_genes[i].nom_transcrit.replace(/ /g,'').replace(/(\r\n|\n|\r)/gm, "") + "</span>"
+                    newInnerHTML = innerHTML.substring(0,start) + "<span class='highlight genetotip" + i + "'>" + innerHTML.substring(start,end+1) + span +"</span>" + innerHTML.substring(end+1, innerHTML.length+1);
 
                 }
                 else {
-
-                    newInnerHTML = newInnerHTML.substring(0,start) + "<span class='highlight'> " + newInnerHTML.substring(start,end+1) + "</span>" + newInnerHTML.substring(end+1, newInnerHTML.length+1);
-
+                    span = "<span class='tooltiptext" + i + "'>" + list_genes[i].nom_transcrit.replace(/ /g,'').replace(/(\r\n|\n|\r)/gm, "") + "</span>"
+                    newInnerHTML = newInnerHTML.substring(0,start) + "<span class='highlight genetotip" + i +"'> " + newInnerHTML.substring(start,end+1) +  span +"</span>" + newInnerHTML.substring(end+1, newInnerHTML.length+1);
                 }
-                inputText.innerHTML = newInnerHTML;
+                inputText.innerHTML = newInnerHTML ;
                 
             }
             

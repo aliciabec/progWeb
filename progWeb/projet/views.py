@@ -136,15 +136,27 @@ def r1(request, requete):
         result = result.filter(espece=requete_decode['espece'])
     
     for genome in result:
-        print("TEST")
         result2 = Gene_prot.objects.filter(Id_genome=genome)
-        print(result2)
-    
+        debut=0
+        for gene in result2:
+            dna_sequence = gene.sequence_nucleotidique
+            gene_length = gene.end_position-gene.start_position
+            fin = gene.start_position
+            for i in debut:fin:
+                print("TEST")
+                genes = separate_genes(dna_sequence, gene_length)
+                print(genes)
+
     return render(request, 'projet/r1.html', {'results_genomique': result,'results_transcrits': result2 })
 
 
-    ## On récupére les positions des gènes
-    #if result[""]
+def separate_genes(dna_sequence, gene_length):
+    genes = []
+    for i in range(0, len(dna_sequence), gene_length):
+        gene = dna_sequence[i:i + gene_length]
+        genes.append(gene)
+    return genes
+
 
 def r2(request, requete):
     # Decode la requete

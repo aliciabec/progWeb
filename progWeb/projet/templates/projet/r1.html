@@ -11,6 +11,50 @@
             table, th, td {
                 border: 1px solid black;
             }
+            .highlight {
+               background-color: yellow;
+            }
+        </style>
+        <style>
+            .owners{
+    	    width:500px;
+            height:300px;
+            border:0px solid #ff9d2a;
+            margin:auto;
+            float:left;
+    
+            }
+            span.own1{
+                background:#F8F8F8;
+                border: 5px solid #DFDFDF;
+                color: #717171;
+                font-size: 13px;
+                height: 250px;
+                width:310px;
+                letter-spacing: 1px;
+                line-height: 20px;
+                position:absolute;
+                text-align: center;
+                text-transform: uppercase;
+                top: auto;
+                left:auto;
+                display:none;
+                padding:0 0px;
+                
+                
+            }
+            
+            p.own{
+                margin:0px;
+                float:left;
+                position:relative;
+                cursor:pointer;
+            }
+            
+            p.own:hover span{
+                display:block;
+                z-index:9;
+                }
         </style>
       
     </head>
@@ -42,14 +86,11 @@
             <h2><strong>Séquence :</h2>
 
             <div style="width:1800px;height:500px;line-height:3em;overflow:scroll;padding:5px;background-color: white  ;color:black  ; border: 2px solid green;">
-            <p  id="sequence" style="word-wrap: break-word;">{{genome.sequence_genome}}</p>
+                <p  id="sequence" style="word-wrap: break-word;">{{genome.sequence_genome}}</p>
             </div>
             
-
-            {% for gene in results_transcrits %}
-                <p> {{gene.start_position}} </p>
-                <p> {{gene.end_position}} </p>
-            {% endfor %}
+            
+            
             {% endfor %}
 
         </form>     
@@ -65,6 +106,43 @@
         {% else %}
             <p>Auncun génome n'a pu etre retrouvé avec votre requete, veuillez préciser votre recherche.</p>        
         {% endif %}
-
+        "{{list_genes|json_script:'listGenes'}}"
     </body>
+
+    <script>
+        function highlight(list_genes) {
+            var inputText = document.getElementById("sequence");
+            var  innerHTML = inputText.innerHTML.replace(/ /g,'');
+            var newInnerHTML = ""
+            for (let i = 0; i < list_genes.length; i++){
+                start = list_genes[i].start
+                end = list_genes[i].end
+                
+                //innerHTML = innerHTML.substring(0,start) + "<span class='highlight'>" + innerHTML.substring(start-1,end+1) + "</span>" + innerHTML.substring(end+1, innerHTML.length+1);
+                console.log("i : " + i)
+                console.log("start : " + start)
+                console.log("end : " + end)
+                console.log("innerHTML.length : " + innerHTML.length)
+                console.log("newInnerHTML.length : " + newInnerHTML.length)
+                console.log("newInnerHTML.length : " + newInnerHTML.length)
+                if (i == 0 ){
+                    newInnerHTML = innerHTML.substring(0,start) + "<span class='highlight'>" + innerHTML.substring(start,end+1) + "</span>" + innerHTML.substring(end+1, innerHTML.length+1);
+
+                }
+                else {
+
+                    newInnerHTML = newInnerHTML.substring(0,start) + "<span class='highlight'> " + newInnerHTML.substring(start,end+1) + "</span>" + newInnerHTML.substring(end+1, newInnerHTML.length+1);
+
+                }
+                inputText.innerHTML = newInnerHTML;
+                
+            }
+            
+            
+        }
+        
+        const list_genes = JSON.parse(document.getElementById('listGenes').textContent)
+        //console.log(list_genes)
+        highlight(list_genes)
+    </script>
 </html>

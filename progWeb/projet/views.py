@@ -134,20 +134,64 @@ def r1(request, requete):
 
     if requete_decode['espece']:
         result = result.filter(espece=requete_decode['espece'])
+
     
     for genome in result:
-        result2 = Gene_prot.objects.filter(Id_genome=genome)
-        debut=0
-        for gene in result2:
-            dna_sequence = gene.sequence_nucleotidique
-            gene_length = gene.end_position-gene.start_position
-            fin = gene.start_position
-            for i in debut:fin:
-                print("TEST")
-                genes = separate_genes(dna_sequence, gene_length)
-                print(genes)
+        # Reduce size for faster analysis
+        genome.sequence_genome = genome.sequence_genome[0:int(len(genome.sequence_genome) /1000)] 
 
-    return render(request, 'projet/r1.html', {'results_genomique': result,'results_transcrits': result2 })
+        genome_genes = Gene_prot.objects.filter(Id_genome=genome)
+        
+        list_genes = []
+
+        for gene in genome_genes:
+            start = gene.start_position
+            end = gene.end_position
+            nom_transcrit = gene.nom_transcrit
+            sub_sequence = gene.sequence_nucleotidique
+            list_genes.append({
+                'start': start,
+                'end': end,
+                'nom_transcrit': nom_transcrit,
+                'sub_sequence': sub_sequence
+            })
+        #start = genome_genes.objects.all()[:1].get()
+        #print("TEST")
+        #print(genome_genes)
+
+        """
+        start= 190
+        start_temp = 1 # On commence à lire la sequence_genome par la position 1
+
+        
+
+        for i in range(start_temp, len(sequence_genome)):
+            gene_dict = {}
+            if i != start:
+                gene_dict = {
+                    sequence_genome[start_temp:start],
+                    False
+                }
+                start_temp=start # On place le curseur au début du premier gene
+            else:
+                for gene in genome_genes:
+                    start = gene.start_position
+                    end = gene.end_position
+                    nom_transcrit = gene.nom_transcrit
+                    sub_sequence = gene.sequence_nucleotidique
+                    gene_dict = {
+                        sub_sequence,
+                        start,
+                        end,
+                        nom_transcrit,
+                        True
+                    }
+                    start_temp=end # On place le curseur à la fin du gene
+        
+            data.append(gene_dict)
+        print(data)
+    """
+    return render(request, 'projet/r1.html', {'results_genomique': result,'list_genes': list_genes })
 
 
 def separate_genes(dna_sequence, gene_length):

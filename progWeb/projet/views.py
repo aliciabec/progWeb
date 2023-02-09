@@ -86,7 +86,14 @@ def annotation(request, pk):
     gene_prot_id_genome = Gene_prot.objects.filter(Id_genome = id_genome)
     
     if request.method == 'POST':
-        if request.POST.get('gene_p') and request.POST.get('nom_gene') and request.POST.get('description'): 
+        
+        # Rajoute dans la base les genes si l'utilsateur clique sur le bouton annot_gene
+        # Va renvoyer un message d'erreur si tout les cadres ne sont pas completé
+        if request.POST.get('gene_p') \
+            and request.POST.get('nom_gene') \
+            and request.POST.get('description') \
+            and request.POST.get("annot_gene"): 
+
             gene_prot = gene_prot_id_genome.filter(nom_transcrit = request.POST.get('gene_p'))[0]
             gene_prot.nom_gene = request.POST.get('nom_gene')
             gene_prot.description = request.POST.get('description')
@@ -94,52 +101,93 @@ def annotation(request, pk):
         else : 
             messages.add_message(request, messages.ERROR, 'Nom du gene ou/et description vide.')
 
-        if not request.POST.get('fin_annotation'):
-            ### boucle qui va nous permettre de mettre a jour la variable estAnnot ou non l'annotation
+        # On rajoute dans la base de genome si on a cliquer sur le bouton annotation
+        # puis on verifie les condition d'annotation.
+        # On mets un message d'erreurs si on clique sur le bouton annotation est que 
+        # toutes les informations ne sont pas rentre.
+        if request.POST.get('fin_annotation'):
             if request.POST.get('espece'):
                 genome_selected = Genome.objects.get(Id_genome = id_genome)
                 genome_selected.espece = request.POST.get('espece')
                 genome_selected.save()
-            else : 
-                messages.add_message(request, messages.ERROR, 'Il n\'y a pas de nom d\'espece.')
 
             annotation.estAnnote = True
             for gene in gene_prot_id_genome:
                 if gene.description == None or gene.nom_gene == None or Genome.objects.get(Id_genome = id_genome).espece == None:
                     annotation.estAnnote = False
-
+            annotation.save()
             if annotation.estAnnote:
                 return HttpResponseRedirect(reverse('projet:annot'))
             else: 
-                messages.add_message(request, messages.ERROR, 'Tous les genes ne sont pas annoté.')
+                messages.add_message(request, messages.ERROR, 'Tous les genes n\'ont pas été annoté.')
 
-    return render(request, 'projet/annotation.html', context={'annotation': annotation, 'gene_prot':gene_prot_id_genome
-        , 'gene_json' :json.dumps(list(gene_prot_id_genome.values()),default=str)}) 
+            
     ### ici on va renvoyer les annotations pour avoir Id_genome, les gene_prot selectionne pour avoir les genes 
     ### mais notamment gene_json qui est une conversion de gene_prot en json pour l'utliser dans le javascript
+    return render(request, 'projet/annotation.html', context={'annotation': annotation, 'gene_prot':gene_prot_id_genome
+        , 'gene_json' :json.dumps(list(gene_prot_id_genome.values()),default=str)}) 
+    
 
-
-class Annot(generic.ListView):
-    template_name = 'projet/annot.html'
-    context_object_name = 'liste_annot'
-    def val_or_annot(request):
+def annotvisu(request, pk):
+    annotation = get_object_or_404(Annotation, pk=pk)
+    id_genome = annotation.Id_genome.Id_genome
+    gene_prot_id_genome = Gene_prot.objects.filter(Id_genome = id_genome)
+    
+    
+    if request.method == 'POST':
         user = None
         if request.user.is_authenticated:
             user = request.user
-    def get_queryset(self):
-#        """
-##        Return the last five published questions (not including those set to be
-#        published in the future).
-#        """
-        #print(self.request.user)
-        return Utilisateur.objects.filter(roles='annot')
+        
+        if request.POST.get('Validation'):
+            annotation.estValide = True
+            annotation.save()
+            return HttpResponseRedirect(reverse('projet:annot'))
 
 
-#class R1(generic.ListView):
-#    template_name = 'projet/r1.html'
-#    context_object_name = 'results_genomique'
-#    def get_queryset(self, requete):
-#        return requete
+    return render(request, 'projet/annotvisu.html'
+        , context={'annotation' : annotation
+        , 'gene_prot':gene_prot_id_genome
+        , 'gene_json' :json.dumps(list(gene_prot_id_genome.values()),default=str)
+        , 'genome' : Genome.objects.get(pk = id_genome)}) 
+
+
+def annot(request):
+    annotation = Annotation.objects.filter(estAnnote = False)
+    annotationAnnote = Annotation.objects.filter(estAnnote = True)
+    try:
+        user = None
+        if request.user.is_authenticated:
+                user = request.user
+    except AttributeError:
+        print("Aucun utilisateur n'est connecter. Revenez sur la page d'accueil.")
+
+    if request.method == 'POST':
+        
+        for annot in annotationAnnote:
+            
+            if request.POST.get('button_' + str(annot.id) + '_annot'):
+                return HttpResponseRedirect(reverse('projet:annotvisu', args=(annot.id,)))
+
+        for annot in annotation:
+
+            if request.POST.get('button_' + str(annot.id) + '_not_annot'):
+            
+                a = annotation.get(id = annot.id)
+                a.emailAnnotateur = Utilisateur.objects.get(username = request.POST.get(str(annot.id)))
+                a.emailValidateur = Utilisateur.objects.get(username = user.username)
+                a.save()         
+
+            elif request.POST.get('button_' + str(annot.id) + '_annotateur_def'):
+                
+                return HttpResponseRedirect(reverse('projet:annotation', args=(annot.id,))) 
+        
+    return render(request, 'projet/annot.html', 
+            context={'liste_annot': Utilisateur.objects.filter(roles='annot')
+                    ,'annotationNonAnnote' : annotation.filter(emailAnnotateur = None, emailValidateur = None)
+                    ,'annotationAttribue' : annotation.exclude(emailAnnotateur = None, emailValidateur = None)
+                    , 'annotationAnnote' : annotationAnnote}) 
+
 
 def r1(request, requete):
     # Decode la requete

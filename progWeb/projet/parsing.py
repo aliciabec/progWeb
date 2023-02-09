@@ -1,7 +1,7 @@
 from projet.models import Genome, Gene_prot, Annotation, Utilisateur
 import os
 
-chemin = "./projet/test/"#data/"
+chemin = "./projet/data/"#test/"
 listObjet = os.listdir(chemin)
 
 dicoGene = {}

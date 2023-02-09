@@ -24,8 +24,7 @@
                 </fieldset>-->
                 <br>
                 
-                <legend for="espece-search">Espece :</legend>
-                <input type="search" placeholder="Ex: Escherichia_coli_str_k_12_substr_mg1655" id="transtype-search" name="espece">
+                <legend for="gene-search">Espèce :</legend> <pre>{{genome.espece}}</pre>
 
                 <br><br>
 
@@ -52,30 +51,16 @@
                     </div>
 
                     <br>
-                    <legend for="gene-search">Nom du gène :</legend>
-                    <input type="search" placeholder="Ex: c1655" id="transtype-search" name="nom_gene">
+                    <legend for="gene-search">Nom du gène :</legend> <pre id="selectedNomGene"></pre>
 
                     <br><br>
 
-                    <legend for="description-search">Description :</legend>
-                    <input type="search" placeholder="Ex: Hypothetical protein" id="transtype-search" name="description">
+                    <legend for="description-search">Description : </legend> <pre id="selectedDescription"></pre>
                     
-
-                    {% if messages %}
-                    <ul class="messages">
-                        {% for message in messages %}
-                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                    {% else %}
-                    <br>
-                    {% endif %}
-                    <input name="annot_gene" type="submit" style = "float: right;" value="Annoter ce gène"> 
-
 
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     <script type="text/javascript">
-                        // Ce code nous permet de recuper les sequences en fonction de notre nom_transcrit                             
+                        // Ce code nous permet de recuper les informations en fonction du nom_transcrit                             
                         var gene_prot = JSON.parse("{{gene_json|escapejs|safe}}");
                         document.getElementById("gene_p").addEventListener("change", function() {
                             var selectedValue = this.value;
@@ -84,6 +69,8 @@
                             });
                             document.getElementById("selectedSeq").innerHTML = selectedGene.sequence_nucleotidique;
                             document.getElementById("selectedSeqProt").innerHTML = selectedGene.sequence_peptidique;
+                            document.getElementById("selectedDescription").innerHTML = selectedGene.description;
+                            document.getElementById("selectedNomGene").innerHTML = selectedGene.nom_gene;
 
                         });
 
@@ -93,9 +80,9 @@
 
 
                 <br><br>
-
-                <input name="fin_annotation" type="submit" value="Annoter" >
-
+                {% if user.roles == 'val' %}
+                    <button name="Validation" type="submit" >Valider</button>
+                {%endif%}
                 <br><br>
 
             </form>

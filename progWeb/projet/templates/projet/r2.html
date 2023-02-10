@@ -70,14 +70,14 @@
             <h2><strong>Séquence nucléotidique : </h2>
 
             <button class="buttonclipboard" onclick="copyText('sequence_nuc')">Copier la séquence dans le presse papier</button>
-            <div style="width:1800px;height:500px;line-height:3em;overflow:scroll;padding:5px;background-color: white  ;color:black  ; border: 2px solid green;">
-            <p  id="sequence_nuc" class = "clipboard" style="word-wrap: break-word;">{{genome_prot.sequence_nucleotidique}}</p>
-            
+            <div style="overflow-x:scroll;width: 1300px;" >
+                <pre  id="sequence_nuc" class = "clipboard" style="word-wrap: break-word;">{{genome_prot.sequence_nucleotidique}}</pre>
             </div>
+
             <h2><strong>Séquence peptidique : </h2>
             <button class="buttonclipboard" onclick="copyText('sequence_pep')">Copier la séquence dans le presse papier</button>
-            <div style="width:1800px;height:500px;line-height:3em;overflow:scroll;padding:5px;background-color: white  ;color:black  ; border: 2px solid green;">
-            <p  id="sequence_pep" class="clipboard" style="word-wrap: break-word;">{{genome_prot.sequence_peptidique}}</p>
+            <div style="overflow-x:scroll;width: 1300px;" >
+                <pre  id="sequence_pep" class="clipboard" style="word-wrap: break-word;">{{genome_prot.sequence_peptidique}}</pre>
             </div>
             
             {% endfor %}

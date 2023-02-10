@@ -48,7 +48,7 @@ Pour lancer le site internet, il faut lancer la commande suivante:
 ```
 Attention à bien etre situé dans vos dossiers (à l'endroit ou se situe le fichier manage.py).
 
-Pour arriver sur la page connexion, il vous suffit d'aller à l'URL suivantes:
+Pour arriver sur la page connexion, il vous suffit d'aller à l'URL suivante:
 
 http://127.0.0.1:8000/projet/connexion
 

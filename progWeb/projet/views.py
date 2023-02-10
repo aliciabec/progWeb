@@ -20,7 +20,12 @@ def accueil(request):
         
         if len(request.POST.get('seq')) < 3:
             # Message d'erreur si l'utilisateur rentre un nombre de nucléotide inférieur à 3.
-            messages.add_message(request, messages.ERROR, 'Au moins trois caractères sont nécessaires.')
+            messages.add_message(request, messages.ERROR, 'Au moins trois caractères sont nécessaires dans la séquence.')
+            return render(request, 'projet/accueil.html')
+
+        if not request.POST.get('type_recherche'):
+            # Message d'erreur si l'utilisateur ne coche aucune des cases
+            messages.add_message(request, messages.ERROR, 'Veuillez cocher au moins une des cases ci-dessous (Genome ou Gene/proteine).')
             return render(request, 'projet/accueil.html')
 
         if request.POST.get('type_recherche') == "genome" :

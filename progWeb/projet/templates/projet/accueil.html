@@ -62,9 +62,6 @@
         <h1>Recherche</h1>
         <form method="post" action="{% url 'projet:accueil' %}">
             {% csrf_token %}
-            <div class="box">
-            <legend for="seq-search">Sequence :</legend>
-            <input type="search" id="seq-search" name="seq">
 
             {% if messages %}
             <ul class="messages">
@@ -76,6 +73,11 @@
             <br>
             {% endif %}
             <br>
+            
+            <div class="box">
+            <legend for="seq-search">Sequence :</legend>
+            <input type="search" id="seq-search" name="seq">
+
             
             <legend for="espece-search">Espece :</legend>
             <input type="search" id="espece-search" name="espece">

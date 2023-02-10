@@ -10,6 +10,35 @@
             table, th, td {
                 border: 1px solid black;
             }
+            .highlight {
+               background-color: yellow;
+            }
+        </style>
+        <style>
+      
+                span[class*=' genetotip'] span[class^='tooltiptext']{
+                visibility: hidden;
+                width: 120px;
+                background-color: black;
+                color: #fff;
+                text-align: center;
+                border-radius: 6px;
+                padding: 5px 0;
+
+                /* Position the tooltip */
+                position: absolute;
+                z-index: 1;
+            }
+            
+            span[class^='genetotip'], span[class*=' genetotip']{
+                position: relative;
+                border-bottom: 1px dotted black;
+
+            }
+            
+            span[class*=' genetotip']:hover span[class^='tooltiptext']{
+                visibility: visible;
+                }
         </style>
       
     </head>
@@ -39,10 +68,14 @@
             </table>
     
             <h2><strong>Séquence :</h2>
+
             <div style="width:1800px;height:500px;line-height:3em;overflow:scroll;padding:5px;background-color: white  ;color:black  ; border: 2px solid green;">
             <p  id="sequence" style="word-wrap: break-word;">
             {{genome.sequence_genome}}
             </div>
+            
+            
+            
             {% endfor %}
 
         </form>     
@@ -65,6 +98,44 @@
         {% else %}
             <p>Auncun génome n'a pu etre retrouvé avec votre requete, veuillez préciser votre recherche.</p>        
         {% endif %}
-
+        "{{list_genes|json_script:'listGenes'}}"
     </body>
+
+    <script>
+        function highlight(list_genes) {
+            var inputText = document.getElementById("sequence");
+            var  innerHTML = inputText.innerHTML.replace(/ /g,'');
+            var newInnerHTML = ""
+            var span = ""
+            for (let i = 0; i < list_genes.length; i++){
+                start = list_genes[i].start
+                end = list_genes[i].end
+                
+                //innerHTML = innerHTML.substring(0,start) + "<span class='highlight'>" + innerHTML.substring(start-1,end+1) + "</span>" + innerHTML.substring(end+1, innerHTML.length+1);
+                /*console.log("i : " + i)
+                console.log("start : " + start)
+                console.log("end : " + end)
+                console.log("innerHTML.length : " + innerHTML.length)
+                console.log("newInnerHTML.length : " + newInnerHTML.length)
+                console.log("newInnerHTML.length : " + newInnerHTML.length)*/
+                if (i == 0){
+                    span = "<span class='tooltiptext" + i + "'>" + list_genes[i].nom_transcrit.replace(/ /g,'').replace(/(\r\n|\n|\r)/gm, "") + "</span>"
+                    newInnerHTML = innerHTML.substring(0,start) + "<span class='highlight genetotip" + i + "'>" + innerHTML.substring(start,end+1) + span +"</span>" + innerHTML.substring(end+1, innerHTML.length+1);
+
+                }
+                else {
+                    span = "<span class='tooltiptext" + i + "'>" + list_genes[i].nom_transcrit.replace(/ /g,'').replace(/(\r\n|\n|\r)/gm, "") + "</span>"
+                    newInnerHTML = newInnerHTML.substring(0,start) + "<span class='highlight genetotip" + i +"'> " + newInnerHTML.substring(start,end+1) +  span +"</span>" + newInnerHTML.substring(end+1, newInnerHTML.length+1);
+                }
+                inputText.innerHTML = newInnerHTML ;
+                
+            }
+            
+            
+        }
+        
+        const list_genes = JSON.parse(document.getElementById('listGenes').textContent)
+        //console.log(list_genes)
+        highlight(list_genes)
+    </script>
 </html>

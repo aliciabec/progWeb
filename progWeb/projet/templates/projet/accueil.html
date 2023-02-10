@@ -68,6 +68,15 @@
             <div class="box">
             <legend for="seq-search">Sequence :</legend>
             <input type="search" id="seq-search" name="seq">
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <br>
+            {% endif %}
 
             
             <legend for="espece-search">Espece :</legend>
@@ -82,7 +91,7 @@
             <legend>Résultats souhaités :</legend>
             <br>
 
-            <input type="radio" name="type_recherche" value="genome" id="genome" onClick="cacher();" />
+            <input type="radio" name="type_recherche" value="genome" id="genome" onClick="cacher();" required/>
             <label for="genome">genome</label>
             <input type="radio" name="type_recherche" value="gene_prot" id="gene_prot" onClick="afficher();" />
             <label for="gene_prot">gene/proteine</label>
@@ -113,15 +122,6 @@
 
             </div>
 
-            {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-            </ul>
-            {% else %}
-            <br>
-            {% endif %}
             <br>
             <button type="submit" value="Submit">Résultat</button></a>
         </form>

@@ -19,11 +19,6 @@ def accueil(request):
             messages.add_message(request, messages.ERROR, 'Au moins trois caractères sont nécessaires dans la séquence.')
             return render(request, 'projet/accueil.html')
 
-        if not request.POST.get('type_recherche'):
-            # Message d'erreur si l'utilisateur ne coche aucune des cases
-            messages.add_message(request, messages.ERROR, 'Veuillez cocher au moins une des cases ci-dessous (Genome ou Gene/proteine).')
-            return render(request, 'projet/accueil.html')
-
         if request.POST.get('type_recherche') == "genome" :
             requete = {}
             requete['sequence'] = request.POST.get('seq')

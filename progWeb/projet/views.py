@@ -31,6 +31,7 @@ def accueil(request):
             requete = {}
             requete['sequence'] = request.POST.get('seq')
             requete['espece'] = request.POST.get('espece')
+            requete['echantillon'] = request.POST.get('echantillon')
             # Encode the JSON string with base64
             requete_encode = base64.b64encode(json.dumps(requete).encode("utf-8"))
 
@@ -126,7 +127,8 @@ class Annot(generic.ListView):
 def r1(request, requete):
     # Decode la requete
     requete_decode = json.loads(base64.b64decode(requete.encode("utf-8")).decode("utf-8"))
-
+    wants_visualisation = requete_decode['echantillon']
+    echantillon_size = 20000
     # On initialise result avec tous les objects du Genome avec le filtre sur la sequence qui ne peut pas etre vide
     result = Genome.objects.filter(sequence_genome__contains=requete_decode['sequence'])
     # On filtre seulement si le champ est rempli par l'utilisateur
@@ -135,13 +137,16 @@ def r1(request, requete):
     if requete_decode['espece']:
         result = result.filter(espece=requete_decode['espece'])
 
-    
+    if not wants_visualisation:
+        return render(request, 'projet/r1.html', {'results_genomique': result, 'wants_visualisation': wants_visualisation})
+
+
     for genome in result:
-        # Reduce size for faster analysis
-        genome.sequence_genome = genome.sequence_genome[0:int(len(genome.sequence_genome) /1000)] 
+
 
         genome_genes = Gene_prot.objects.filter(Id_genome=genome)
         
+       
         list_genes = []
 
         for gene in genome_genes:
@@ -149,49 +154,63 @@ def r1(request, requete):
             end = gene.end_position
             nom_transcrit = gene.nom_transcrit
             sub_sequence = gene.sequence_nucleotidique
+            if wants_visualisation and start > echantillon_size:
+                break
             list_genes.append({
                 'start': start,
                 'end': end,
                 'nom_transcrit': nom_transcrit,
                 'sub_sequence': sub_sequence
             })
-        #start = genome_genes.objects.all()[:1].get()
-        #print("TEST")
-        #print(genome_genes)
 
-        """
-        start= 190
-        start_temp = 1 # On commence à lire la sequence_genome par la position 1
+        def nucleotide_is_in_gene(gene, nucleotide_index):
+            if gene['start'] <= nucleotide_index <= gene['end']:
+                return True
+            return False
+        def nucleotide_in_list_of_genes(list_genes, nucleotide_index):
+            for gene in list_genes:
+                if nucleotide_is_in_gene(gene, nucleotide_index):
+                    return True, gene
+            return False, None
 
-        
+        all_not_genes = []
+        start = 0
+        previous_is_in_gene = False
+        sub_sequence = ""
+        for i, nucleotide in enumerate(genome.sequence_genome):
 
-        for i in range(start_temp, len(sequence_genome)):
-            gene_dict = {}
-            if i != start:
-                gene_dict = {
-                    sequence_genome[start_temp:start],
-                    False
-                }
-                start_temp=start # On place le curseur au début du premier gene
+            if wants_visualisation and i > echantillon_size:
+                break
+            # Iterate over all nucleotide and check if it is in a gene
+            is_in_gene = False
+            is_in_gene, gene = nucleotide_in_list_of_genes(list_genes=list_genes, nucleotide_index=i)
+
+            if not is_in_gene:
+                sub_sequence += nucleotide
+                previous_is_in_gene = False
+
+
             else:
-                for gene in genome_genes:
-                    start = gene.start_position
-                    end = gene.end_position
-                    nom_transcrit = gene.nom_transcrit
-                    sub_sequence = gene.sequence_nucleotidique
-                    gene_dict = {
-                        sub_sequence,
-                        start,
-                        end,
-                        nom_transcrit,
-                        True
-                    }
-                    start_temp=end # On place le curseur à la fin du gene
-        
-            data.append(gene_dict)
-        print(data)
-    """
-    return render(request, 'projet/r1.html', {'results_genomique': result,'list_genes': list_genes })
+                if not previous_is_in_gene:
+                    # Si on découvre un nouveau gene
+
+                    end = i
+                    all_not_genes.append({
+                        'start': start,
+                        'end': end,
+                        'nom_transcrit': None,
+                        'sub_sequence': sub_sequence
+                    })
+                    previous_is_in_gene = True
+                start = i
+                sub_sequence = ""
+
+        final_list_genome = list_genes + all_not_genes
+        final_list_genome = sorted(final_list_genome, key=lambda e: e['start'])
+
+        genome.sequence_genome_dict = final_list_genome
+
+    return render(request, 'projet/r1.html', {'results_genomique': result, 'wants_visualisation': wants_visualisation})
 
 
 def separate_genes(dna_sequence, gene_length):

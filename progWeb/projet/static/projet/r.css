@@ -76,3 +76,6 @@ input[type=button] {
     width: 50%;  
     border: 1px solid black;
 }
+
+h2 {font-family:Verdana; text-align:center;color:white;}
+h3{text-shadow:2px 2px 3px black;color: white;text-align:center;}

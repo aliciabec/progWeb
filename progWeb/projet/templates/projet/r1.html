@@ -118,7 +118,14 @@
         <button>Recherche sur BD alternative</button>
         <button>Alignement</button>
         {% else %}
-            <p>Auncun génome n'a pu etre retrouvé avec votre requete, veuillez préciser votre recherche.</p>        
+            <div class="box1"><br/><br/>
+            <center><img src="https://cdn.iconscout.com/icon/free/png-512/dizzy-face-cross-error-emoji-37675.png" width="70" class="center"/></center>
+            <center><h2><strong>Oh No</h2></center>
+            <br><br>
+            <br><br>
+            <center><h3>Auncun génome n'a pu etre retrouvé avec votre requete, veuillez préciser votre recherche!!</h3></center>
+            <center><h3><button class="btn success" href='projet/accueil'>Nouvelle Recherche</button></h3></center>
+           </div>        
         {% endif %}
         "{{list_genes|json_script:'listGenes'}}"
     </body>

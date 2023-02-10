@@ -8,12 +8,7 @@ class Utilisateur(AbstractUser):
      
     roles = models.CharField(max_length=100,choices=(("annot","annotateur"),("val", "validateur"),("user","utilisateur")),default="user")
     tel = models.IntegerField()
-    AbstractUser.username = models.OneToOneField(AbstractUser, on_delete=models.CASCADE)
-    AbstractUser.email = models.EmailField(max_length=30)
-    AbstractUser.last_name = models.CharField(max_length=30)
-    AbstractUser.first_name = models.CharField(max_length=30)
-    AbstractUser.password= models.CharField(max_length=30)
-
+    
 
 class Genome(models.Model):
     Id_genome = models.CharField(max_length=100,primary_key=True)

@@ -172,7 +172,7 @@ def blast_results(request):
         blast_results= NCBIWWW.qblast("blastn", "nr",sequence)
         blast_record = NCBIXML.parse(blast_results)
         blast_results = []
-        for record in blast_record:
+        for record in blast_record: 
             for alignment in record.alignments:
                 for hsp in alignment.hsps:
                     blast_results.append((alignment.title,hsp.identities/hsp.align_length))

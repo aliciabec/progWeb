@@ -16,16 +16,18 @@
           <tr>
             <th>Alignment Title</th>
             <th>Identity Percentage</th>
+        
           </tr>
         </thead>
         <tbody>
           {% if blast_results %}
-          {% for result in blast_results %}
+
+            {% for alignment in blast_results %}
           <tr>
-            <td>{{ result.0 }}</td>
-            <td>{{ result.1|floatformat:2 }}%</td>
+            <td>{{alignment.title}}</td>
+            <td>{{alignment.hsp}}</td>
           </tr>
-          {% endfor %}
+            {% endfor %}
 
           {% else %}
             <p>Auncun Aligenement n'a pu etre retrouvé avec votre requete, veuillez préciser votre recherche.</p>        

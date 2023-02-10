@@ -80,8 +80,6 @@
 
         </form>     
         <br><br>
-        <button>Extraire</button>
-        <br><br>
         <br><br>
         <legend><strong>Séquence Séléctionnée :</legend>
         <br><br>
@@ -98,7 +96,6 @@
         {% else %}
             <p>Auncun génome n'a pu etre retrouvé avec votre requete, veuillez préciser votre recherche.</p>        
         {% endif %}
-        "{{list_genes|json_script:'listGenes'}}"
     </body>
 
     <script>

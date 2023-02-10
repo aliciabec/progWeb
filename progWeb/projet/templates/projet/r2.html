@@ -83,10 +83,19 @@
             
             {% endfor %}
 
-        </form>     
-        <button>Recherche sur BD alternative</button>
-
-        <button>Alignement</button>
+        </form>  
+        <br><br> 
+        <legend><strong>Séquence Séléctionnée :</legend>
+        <br><br>  
+        <p>Insérez dans le cadre dessous la séquence nucléotidique que vous voulez alignés, puis cliquer sur le boutton "Submit"</p>
+        <br><br>
+        <form action ="{% url 'projet:blast_results'%}" method="post">
+            {% csrf_token %}
+            <textarea name="sequence" style="border: 2px solid green;width: 100%;
+            height: 150px;"></textarea>
+            <br><br>
+            <button type="submit">Submit</button>
+        </form>
         {% else %}
             <p>Auncun Génome n'a pu etre trouvé. Veuillez affiner votre recherche.</p>        
         {% endif %}

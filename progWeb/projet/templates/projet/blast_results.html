@@ -1,0 +1,35 @@
+{% load static %}
+<html lang="fr">
+    <head>
+    <!--	<meta charset="UTF-8"> -->
+        <meta charset="utf-8">
+        <title>RésultatsB</title>
+        <link rel="stylesheet" type="text/css" href="{% static 'projet/r.css' %}">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      
+    </head>
+
+    <body>
+      <h1>BLAST Results</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Alignment Title</th>
+            <th>Identity Percentage</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if blast_results %}
+          {% for result in blast_results %}
+          <tr>
+            <td>{{ result.0 }}</td>
+            <td>{{ result.1|floatformat:2 }}%</td>
+          </tr>
+          {% endfor %}
+
+          {% else %}
+            <p>Auncun Aligenement n'a pu etre retrouvé avec votre requete, veuillez préciser votre recherche.</p>        
+          {% endif %}
+        </tbody>
+      </table>
+    </body>

@@ -9,7 +9,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 import json
 import base64
-import requests
+import requests, sys
 
 def accueil(request):
     user = None
@@ -125,16 +125,14 @@ def r1(request, requete):
 
     # On initialise result avec tous les objects du Genome avec le filtre sur la sequence qui ne peut pas etre vide
     result = Genome.objects.filter(sequence_genome__contains=requete_decode['sequence'])
-    print("TEST")
-    print(result)
-
+ 
     # On filtre seulement si le champ est rempli par l'utilisateur
     # Pour le Genome seul le champ espece peut etre vide parmis les deux champs à remplir (sequence et espece)
 
     if requete_decode['espece']:
         result = result.filter(espece=requete_decode['espece'])
  
-    return render(request, 'projet/r1.html', {'results_genomique': result})
+    return render (request, 'projet/r1.html', {'results_genomique': result})
 
 def r2(request, requete):
     # Decode la requete
@@ -160,10 +158,22 @@ def r2(request, requete):
     return render(request, 'projet/r2.html', {'results_gene_prot': result})
 
 
-def home(request):
-    response = requests.get('http://freegeoip.net/json/')
-    geodata = response.json()
-    return render(request, 'core/home.html', {
-        'ip': geodata['ip'],
-        'country': geodata['country_name']
-    })
+from Bio.Blast import NCBIWWW
+from Bio.Blast import NCBIXML
+
+def blast_results(request):
+    if request.method == 'POST':
+        sequence = request.POST.get('sequence')
+        blast_results= NCBIWWW.qblast("blastn", "nr",sequence)
+        blast_record = NCBIXML.parse(blast_results)
+        blast_results = []
+        for record in blast_record:
+            for alignment in record.alignments:
+                for hsp in alignment.hsps:
+                    blast_results.append((alignment.title,hsp.identities/hsp.align_length))
+        context = {'blast_results': blast_results}
+        return render(request, 'projet/blast_results.html', context)
+    return render(request, 'projet/blast_results.html')
+
+
+

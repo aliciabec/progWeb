@@ -6,6 +6,13 @@ Notre projet Web consiste à l’élaboration d’un site internet permettant la
 
 Les packages nécessaires au projet sont présents dans le fichier requirements.txt. L'installation de Django est nécessaire aussi.
 
+ ```
+    virtualenv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+    
+ ```
+
 ***ETAPE 2: Création de la base de donnée***
 
 Pour créer la base de donnée, allez dans le répertoire progWeb/ qui contient le fichier manage.py puis exécutez les commandes suivantes:

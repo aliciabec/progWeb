@@ -8,6 +8,8 @@ import json
 import base64
 
 def accueil(request):
+    """Fonction permet les requetes sur le genome ainsi que sur les genes"""
+
     user = None
     if request.user.is_authenticated:
         user = request.user
@@ -48,6 +50,8 @@ def accueil(request):
 
 
 def connexion(request):
+    """Fonction qui connecte un utlisateur deja inscrit"""
+
     if request.method == 'POST':
 
         username = request.POST.get('username')
@@ -69,6 +73,8 @@ def connexion(request):
 
 
 def inscription(request): 
+    """Fonction qui permet l'inscription d'un utlisateur """
+
     if request.method == 'POST':
         ## Etapes de recuperation de la valeur de role  
 
@@ -94,6 +100,8 @@ def inscription(request):
 
 
 def annotation(request, pk):
+    """Fonction qui permet d'annoter un genome """
+
     annotation = get_object_or_404(Annotation, pk=pk)
     ### cet object va recupere tout ce qui possède le meme Id_genome que l'annotation dans la classe gene_prot
     id_genome = annotation.Id_genome.Id_genome
@@ -143,6 +151,7 @@ def annotation(request, pk):
     
 
 def annotvisu(request, pk):
+    """Fonction qui permet la visulation de l'annotation """
     annotation = get_object_or_404(Annotation, pk=pk)
     id_genome = annotation.Id_genome.Id_genome
     gene_prot_id_genome = Gene_prot.objects.filter(Id_genome = id_genome)
@@ -150,9 +159,12 @@ def annotvisu(request, pk):
     
     if request.method == 'POST':
         user = None
+        # on verifie que l'utilisateur est bien connecter 
         if request.user.is_authenticated:
             user = request.user
         
+        # Si on a cliquer sur le bouton validation l'utilisateur sera 
+        # redireger vers la page avec les annotations 
         if request.POST.get('Validation'):
             annotation.estValide = True
             annotation.save()
@@ -167,6 +179,12 @@ def annotvisu(request, pk):
 
 
 def annot(request):
+    """Fonction qui permet a un validateur de definir un annotateur 
+    ainsi qu'a l'annotateur d'avoir un compte rendu des annotations 
+    qui lui est attribue """
+
+    # La page etant decouper en deux parties : annote et non annote 
+    # les deux requetes suivente sont les non annotes et annotes respectivement
     annotation = Annotation.objects.filter(estAnnote = False)
     annotationAnnote = Annotation.objects.filter(estAnnote = True)
     try:
@@ -178,11 +196,13 @@ def annot(request):
 
     if request.method == 'POST':
         
+        # On boucle sur les annotes pour afficher si on a un bouton clique 
         for annot in annotationAnnote:
-            
             if request.POST.get('button_' + str(annot.id) + '_annot'):
                 return HttpResponseRedirect(reverse('projet:annotvisu', args=(annot.id,)))
 
+        # On boucle sur les non annotes pour definir un annotateur ou afficher l'annotation 
+        # en fonction de si l'utilsateur est un annotateur ou validateur 
         for annot in annotation:
 
             if request.POST.get('button_' + str(annot.id) + '_not_annot'):
@@ -205,6 +225,7 @@ def annot(request):
 
 
 def r1(request, requete):
+    """Fonction qui va permettre la visualitation du genome"""
     # Decode la requete
     requete_decode = json.loads(base64.b64decode(requete.encode("utf-8")).decode("utf-8"))
     wants_visualisation = requete_decode['echantillon']
@@ -302,6 +323,8 @@ def separate_genes(dna_sequence, gene_length):
 
 
 def r2(request, requete):
+    """Fonction qui va permettre la visualitation des genes ainsi que des proteines"""
+
     # Decode la requete
     requete_decode = json.loads(base64.b64decode(requete.encode("utf-8")).decode("utf-8"))
 

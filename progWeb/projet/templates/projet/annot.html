@@ -13,48 +13,60 @@
         <h1>Annotation</h1>
         <form method="post" action="{% url 'projet:annot' %}">
             {% csrf_token %}
-            <p>Liste des annotations en attente de validation :</p>
+            <div class="box">
+                <div>
+                <p>Liste des annotations en attente de validation :</p>
 
-            <br><br>
-            
-            {% for annotation in annotationAnnote %}
-                <input type="submit" name="button_{{annotation.id}}_annot" value="Annotation {{annotation.id}}" >
                 <br><br>
-            {%endfor%}
-
-        
-            <br><br>
-            
-            
-            <p>Annotations non annotés :
-            </p>
-            
-            <!-- Affichage des bouton en fonction de si on a un validateur et des annotations attribués -->
-            {% if user.roles == 'val' %}
-                {% for annotation in annotationNonAnnote%}
-                        <label for="{{annotation.id}}"> Annotation {{annotation.id}} : </label>
-                        <select name="{{annotation.id}}" id="{{annotation.id}}">
-                            {% for u in liste_annot %}
-                                <option value="{{u.username}}">{{u.username}}</option>
-                            {%endfor%}
-                        </select>
-                        <input type="submit" name="button_{{annotation.id}}_not_annot" value="OK">
+                
+                {% for annotation in annotationAnnote %}
+                    <input type="submit" name="button_{{annotation.id}}_annot" value="Annotation {{annotation.id}}" >
                     <br><br>
-                {% endfor %}
-            {%endif%}
+                {%endfor%}
+
             
-            
-            <!-- Affichage des bouton en fonction de si on a un annotateur et si on ete attribués a cette annotation-->
-            {% if user.roles == 'annot' %}
-                {% for annotation in annotationAttribue %}
-                    {%if user.email == annotation.emailAnnotateur.email %}                       
-                        <input type="submit" name="button_{{annotation.id}}_annotateur_def" value="Annotation {{annotation.id}}">
-                    {%endif%}
-                {% endfor %}
-            {% endif%}
-            
-            
-            <br><br>
+                <br><br>
+                
+                
+                <p>Annotations non annotés :
+                </p>
+                
+                <!-- Affichage des bouton en fonction de si on a un validateur et des annotations attribués -->
+                {% if user.roles == 'val' %}
+                    {% for annotation in annotationNonAnnote%}
+                            <label for="{{annotation.id}}"> Annotation {{annotation.id}} : </label>
+                            <select name="{{annotation.id}}" id="{{annotation.id}}">
+                                {% for u in liste_annot %}
+                                    <option value="{{u.username}}">{{u.username}}</option>
+                                {%endfor%}
+                            </select>
+                            <input type="submit" name="button_{{annotation.id}}_not_annot" value="OK">
+                        <br><br>
+                    {% endfor %}
+                {%endif%}
+                
+                
+                <!-- Affichage des bouton en fonction de si on a un annotateur et si on ete attribués a cette annotation-->
+                {% if user.roles == 'annot' %}
+                    {% for annotation in annotationAttribue %}
+                        {%if user.email == annotation.emailAnnotateur.email %}                       
+                            <input type="submit" name="button_{{annotation.id}}_annotateur_def" value="Annotation {{annotation.id}}">
+                        {%endif%}
+                    {% endfor %}
+                {% endif%}
+                
+                
+                <br><br>
+                </div>
+            </div>
+        
+            <div>
+                <ul id="menu-vertical">
+                    <li><input type="button" onclick="window.location.href = 'http://127.0.0.1:8000/projet/connexion';" value="Connextion" /></li>
+                    <li><input type="button" onclick="window.location.href = 'http://127.0.0.1:8000/projet/';" value="Page d'accueil" /></li>
+                </ul>
+            </div>
+
         </form>
         
         <br><br>

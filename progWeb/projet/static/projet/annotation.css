@@ -24,14 +24,6 @@ input[type=search], input[type=password] {
     border: 1px solid black;
 }
 
-#menu-vertical, #menu-vertical ul {
-    padding:0;
-    margin:0;
-    list-style:none;
-    float:none;
-    width: 100%;
-}
-
 .select-cible{
     display:none
 }

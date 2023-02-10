@@ -4,7 +4,7 @@ Notre projet Web consiste à l’élaboration d’un site internet permettant la
 
 ***ETAPE 1: Installation des packages***
 
-Les packages nécessaires au projet sont présents dans le fichier requirements.txt. 
+Les packages nécessaires au projet sont présents dans le fichier requirements.txt. L'installation de Django est nécessaire aussi.
 
 ***ETAPE 2: Création de la base de donnée***
 

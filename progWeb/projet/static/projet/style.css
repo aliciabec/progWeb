@@ -32,6 +32,22 @@ button {
     width: 100%;
 }
 
-p {
-    visibility: hidden;
+legend {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+
+.monBouton {
+    background-color: grey;   
+    width: 25%;  
+     color: white;   
+     padding: 10px;   
+     margin: 10px 0px;   
+     border: none;   
+     cursor: pointer;   
   }
+
+  

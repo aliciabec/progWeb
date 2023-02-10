@@ -7,13 +7,13 @@
         <meta charset="utf-8">
         <title>Annotation</title>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="{% static 'projet/annotation.css' %}">   
+        <link rel="stylesheet" type="text/css" href="{% static 'projet/style.css' %}">   
     
     
     </head>
 
     <body>
-        <div class="container">
+        <div class="box">
             <form action="{% url 'projet:annotation' annotation.id %}" method="post">
                 {% csrf_token %}
                 <h1>{{annotation.Id_genome.Id_genome}}</h1>
@@ -86,6 +86,13 @@
                 <br><br>
 
             </form>
+        </div>
+
+        <div>
+            <ul id="menu-vertical">   
+                <li><a href="http://127.0.0.1:8000/projet/"><button>Page d'accueil</button></a></li>
+                <li><a href="http://127.0.0.1:8000/projet/annot"><button>Annotation</button></a></li>                      
+            </ul>
         </div>
     </body>
 </html>

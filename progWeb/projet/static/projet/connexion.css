@@ -19,15 +19,15 @@ button {
  
      
 
-  .box {   
-     padding: 25px;  
-     width: 500px;
-     height: 380px;
-     margin-left: 500px;
-     border: 1px solid black;
-     display: flex;
-     align-items: center;
-     justify-content: center;  
+.box {   
+    padding: 25px;  
+    width: 500px;
+    height: 380px;
+    margin-left: 500px;
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;  
  } 
 
  .box div {

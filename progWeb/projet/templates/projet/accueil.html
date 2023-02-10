@@ -19,43 +19,6 @@
             }
         </script> 
 
-        <style>
-
-        button {   
-            background-color: grey;   
-            width: 25%;  
-            color: white;   
-            padding: 10px;   
-            margin: 10px 0px;   
-            border: none;   
-            cursor: pointer;   
-            }   
-
-        input[type=search], input[type=password] {   
-            width: 45%;   
-            margin: 8px 0;  
-            padding: 12px 20px;   
-            display: inline-block;   
-            border: 2px solid green;   
-            box-sizing: border-box;   
-        }
-
-        .box { 
-            padding: 25px; 
-            width: 50%;  
-            border: 1px solid black;
-            float:left;
-        }
-
-        #menu-vertical, #menu-vertical ul {
-            padding:0;
-            margin:0;
-            list-style:none;
-            float:none;
-            width: 100%;
-        }
-
-        </style>
     </head>
 
     <body>
@@ -129,15 +92,15 @@
 
 
         <div>
-        <ul id="menu-vertical">
-            <li><a href="http://127.0.0.1:8000/projet/connexion/"><button>Connexion</button></a></li>
-            <li><a href="http://127.0.0.1:8000/projet/inscription/"><button>Insciption</button></a></li>
-            {% if user %}
-                {% if user.roles != 'user' %}
-                    <li><a href="http://127.0.0.1:8000/projet/annot/"><button>Annotation</button></a></li>
+            <ul id="menu-vertical">
+                <li><a href="http://127.0.0.1:8000/projet/connexion/"><button>Connexion</button></a></li>
+                <li><a href="http://127.0.0.1:8000/projet/inscription/"><button>Insciption</button></a></li>
+                {% if user %}
+                    {% if user.roles != 'user' %}
+                        <li><a href="http://127.0.0.1:8000/projet/annot/"><button>Annotation</button></a></li>
+                    {% endif %}
                 {% endif %}
-            {% endif %}
-        </ul>
+            </ul>
         </div>
 
     </body>

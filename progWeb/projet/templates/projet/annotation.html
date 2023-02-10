@@ -7,13 +7,13 @@
         <meta charset="utf-8">
         <title>Annotation</title>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="{% static 'projet/annotation.css' %}">   
+        <link rel="stylesheet" type="text/css" href="{% static 'projet/style.css' %}">   
     
     
     </head>
 
     <body>
-        <div class="container">
+        <div class="box">
             <form action="{% url 'projet:annotation' annotation.id %}" method="post">
                 {% csrf_token %}
                 <h1>{{annotation.Id_genome.Id_genome}}</h1>
@@ -41,12 +41,14 @@
                         {%endif%}
                     </select>
 
-                    <p>Séquence nécleotidique : </p>
+                    <br><br>
+                    <legend for="gene-search">Séquence nécleotidique : </legend>
                     <div style="overflow-x:scroll;width: 600px;" >
                         <pre id="selectedSeq"></pre>
                     </div>
-
-                    <p>Séquence protéique : </p>
+                    
+                    <br><br>
+                    <legend for="gene-search">Séquence protéique : </legend>
                     <div style="overflow-x:scroll;width: 600px;" >
                         <pre id="selectedSeqProt"></pre>
                     </div>
@@ -94,7 +96,7 @@
 
                 <br><br>
 
-                <input name="fin_annotation" type="submit" value="Annoter" >
+                <input class="monBouton" name="fin_annotation" type="submit" value="Annoter" >
 
                 <br><br>
 
@@ -102,8 +104,8 @@
         </div>
         <div>
             <ul id="menu-vertical">
-                <li><input type="button" onclick="window.location.href = 'http://127.0.0.1:8000/projet/connexion';" value="Connextion" /></li>
-                <li><input type="button" onclick="window.location.href = 'http://127.0.0.1:8000/projet/';" value="Page d'accueil" /></li>
+                <li><a href="http://127.0.0.1:8000/projet/"><button>Page d'accueil</button></a></li>
+                <li><a href="http://127.0.0.1:8000/projet/annot"><button>Annotation</button></a></li>                      
             </ul>
         </div>
     </body>

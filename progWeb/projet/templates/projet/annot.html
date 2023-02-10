@@ -5,7 +5,7 @@
     <!--	<meta charset="UTF-8"> -->
         <meta charset="utf-8">
         <title>Annotation </title>
-        <link rel="stylesheet" type="text/css" href="{% static 'projet/annot.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'projet/style.css' %}">
 
     </head>
     
@@ -14,8 +14,8 @@
         <form method="post" action="{% url 'projet:annot' %}">
             {% csrf_token %}
             <div class="box">
-                <div>
-                <p>Liste des annotations en attente de validation :</p>
+                
+                <legend style=" font-weight: bold;font-size: 1.2em;" for="seq-search">Liste des annotations en attente de validation :</legend>
 
                 <br><br>
                 
@@ -28,9 +28,10 @@
                 <br><br>
                 
                 
-                <p>Annotations non annotés :
-                </p>
+                <legend style=" font-weight: bold;font-size: 1.2em;" for="seq-search">Annotations non annotés :</legend>
                 
+                <br><br>
+
                 <!-- Affichage des bouton en fonction de si on a un validateur et des annotations attribués -->
                 {% if user.roles == 'val' %}
                     {% for annotation in annotationNonAnnote%}
@@ -57,17 +58,14 @@
                 
                 
                 <br><br>
-                </div>
+            </form>
             </div>
         
             <div>
-                <ul id="menu-vertical">
-                    <li><input type="button" onclick="window.location.href = 'http://127.0.0.1:8000/projet/connexion';" value="Connextion" /></li>
-                    <li><input type="button" onclick="window.location.href = 'http://127.0.0.1:8000/projet/';" value="Page d'accueil" /></li>
+                <ul id="menu-vertical">   
+                    <li><a href="http://127.0.0.1:8000/projet/"><button>Page d'accueil</button></a></li>           
                 </ul>
             </div>
-
-        </form>
         
         <br><br>
 

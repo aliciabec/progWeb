@@ -11,6 +11,39 @@
             table, th, td {
                 border: 1px solid black;
             }
+            .highlight {
+               background-color: #fdf0ff;
+            }
+        </style>
+        <style>
+      
+                span[class*=' genetotip'] span[class^='tooltiptext']{
+                visibility: hidden;
+                width: 120px;
+                background-color: black;
+                color: #fff;
+                text-align: center;
+                border-radius: 6px;
+                padding: 5px 0;
+
+                /* Position the tooltip */
+                position: absolute;
+                z-index: 1;
+            }
+            
+            span[class^='genetotip'], span[class*=' genetotip']{
+                position: relative;
+                border-bottom: 1px dotted black;
+
+            }
+            
+            span[class*=' genetotip']:hover span[class^='tooltiptext']{
+                visibility: visible;
+                }
+            span[class*=' genetotip']:hover {
+                border-bottom: 1px solid;
+                color: brown;
+                }
         </style>
       
     </head>
@@ -42,8 +75,31 @@
             <h2><strong>Séquence :</h2>
 
             <div style="width:1800px;height:500px;line-height:3em;overflow:scroll;padding:5px;background-color: white  ;color:black  ; border: 2px solid green;">
-            <p  id="sequence" style="word-wrap: break-word;">{{genome.sequence_genome}}</p>
+                <p  id="sequence" style="word-wrap: break-word;">
+                
+                    {% if wants_visualisation == 'on' %}
+                        {% for gene in genome.sequence_genome_dict %}
+
+                            {% if gene.nom_transcrit %}
+                            <span class="highlight genetotip">{{gene.sub_sequence}}<span class="tooltiptext">{{gene.nom_transcrit}}</span></span>
+                            {% else %}
+                                {{gene.sub_sequence}}
+                            {% endif %}
+
+                        {% endfor %}
+
+        
+                    {% else %}  
+                        {{genome.sequence_genome}}
+                    {% endif %}
+
+
+                </p>
+
+
             </div>
+            
+            
             {% endfor %}
 
             {% for gene in results_transcrits %}
@@ -64,6 +120,8 @@
         {% else %}
             <p>Auncun génome n'a pu etre retrouvé avec votre requete, veuillez préciser votre recherche.</p>        
         {% endif %}
-
+        "{{list_genes|json_script:'listGenes'}}"
     </body>
+
+   
 </html>

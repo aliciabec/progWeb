@@ -28,6 +28,7 @@ def accueil(request):
             requete = {}
             requete['sequence'] = request.POST.get('seq')
             requete['espece'] = request.POST.get('espece')
+            requete['echantillon'] = request.POST.get('echantillon')
             # Encode the JSON string with base64
             requete_encode = base64.b64encode(json.dumps(requete).encode("utf-8"))
 
@@ -211,7 +212,8 @@ def annot(request):
 def r1(request, requete):
     # Decode la requete
     requete_decode = json.loads(base64.b64decode(requete.encode("utf-8")).decode("utf-8"))
-
+    wants_visualisation = requete_decode['echantillon']
+    echantillon_size = 20000
     # On initialise result avec tous les objects du Genome avec le filtre sur la sequence qui ne peut pas etre vide
     result = Genome.objects.filter(sequence_genome__contains=requete_decode['sequence'])
     # On filtre seulement si le champ est rempli par l'utilisateur
@@ -219,13 +221,89 @@ def r1(request, requete):
 
     if requete_decode['espece']:
         result = result.filter(espece=requete_decode['espece'])
-    
+
+    if not wants_visualisation:
+        return render(request, 'projet/r1.html', {'results_genomique': result, 'wants_visualisation': wants_visualisation})
+
+
     for genome in result:
-        print("TEST")
-        result2 = Gene_prot.objects.filter(Id_genome=genome)
-        print(result2)
-    
-    return render(request, 'projet/r1.html', {'results_genomique': result,'results_transcrits': result2 })
+
+
+        genome_genes = Gene_prot.objects.filter(Id_genome=genome)
+        
+       
+        list_genes = []
+
+        for gene in genome_genes:
+            start = gene.start_position
+            end = gene.end_position
+            nom_transcrit = gene.nom_transcrit
+            sub_sequence = gene.sequence_nucleotidique
+            if wants_visualisation and start > echantillon_size:
+                break
+            list_genes.append({
+                'start': start,
+                'end': end,
+                'nom_transcrit': nom_transcrit,
+                'sub_sequence': sub_sequence
+            })
+
+        def nucleotide_is_in_gene(gene, nucleotide_index):
+            if gene['start'] <= nucleotide_index <= gene['end']:
+                return True
+            return False
+        def nucleotide_in_list_of_genes(list_genes, nucleotide_index):
+            for gene in list_genes:
+                if nucleotide_is_in_gene(gene, nucleotide_index):
+                    return True, gene
+            return False, None
+
+        all_not_genes = []
+        start = 0
+        previous_is_in_gene = False
+        sub_sequence = ""
+        for i, nucleotide in enumerate(genome.sequence_genome):
+
+            if wants_visualisation and i > echantillon_size:
+                break
+            # Iterate over all nucleotide and check if it is in a gene
+            is_in_gene = False
+            is_in_gene, gene = nucleotide_in_list_of_genes(list_genes=list_genes, nucleotide_index=i)
+
+            if not is_in_gene:
+                sub_sequence += nucleotide
+                previous_is_in_gene = False
+
+
+            else:
+                if not previous_is_in_gene:
+                    # Si on découvre un nouveau gene
+
+                    end = i
+                    all_not_genes.append({
+                        'start': start,
+                        'end': end,
+                        'nom_transcrit': None,
+                        'sub_sequence': sub_sequence
+                    })
+                    previous_is_in_gene = True
+                start = i
+                sub_sequence = ""
+
+        final_list_genome = list_genes + all_not_genes
+        final_list_genome = sorted(final_list_genome, key=lambda e: e['start'])
+
+        genome.sequence_genome_dict = final_list_genome
+
+    return render(request, 'projet/r1.html', {'results_genomique': result, 'wants_visualisation': wants_visualisation})
+
+
+def separate_genes(dna_sequence, gene_length):
+    genes = []
+    for i in range(0, len(dna_sequence), gene_length):
+        gene = dna_sequence[i:i + gene_length]
+        genes.append(gene)
+    return genes
 
 
 def r2(request, requete):

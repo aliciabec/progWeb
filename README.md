@@ -10,7 +10,6 @@ Les packages nécessaires au projet sont présents dans le fichier requirements.
     virtualenv venv
     source venv/bin/activate
     pip install -r requirements.txt
-    
  ```
 
 ***ETAPE 2: Création de la base de donnée***
